@@ -4,6 +4,7 @@ import com.patrick.gobang.listener.ChessMouseListener;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseListener;
 
 /**
  * @Author: PatrickZ
@@ -15,12 +16,13 @@ public class GameMainFrame extends JFrame {
     private JPanel chessPanel = null;
     private JPanel buttonPanel = null;
 
+    private MouseListener mouseListener = null;
+
 
     public GameMainFrame() {
 
         init();
 
-        chessPanel.addMouseListener(new ChessMouseListener());
 
     }
 
@@ -69,26 +71,17 @@ public class GameMainFrame extends JFrame {
 
     private void initChessPanel() {
 
-        chessPanel = new ChessPanel();
+        chessPanel = new ChessPanel(new BorderLayout());
 
         chessPanel.setBackground(Color.LIGHT_GRAY);
         chessPanel.setPreferredSize(new Dimension(600, 0));
         chessPanel.setBorder(BorderFactory.createLoweredBevelBorder());
 
+        mouseListener = new ChessMouseListener(chessPanel);
+        chessPanel.addMouseListener(mouseListener);
+
     }
 
-//    @Override
-//    public void paint(Graphics graphics) {
-//
-//        super.paint(graphics);
-//
-//        DrawChess.drawLineHorizontal(graphics);
-//        DrawChess.drawLineVertical(graphics);
-//
-//
-//        graphics.fill3DRect(0, 0, 35, 20, true);
-//
-//    }
 
 
 }

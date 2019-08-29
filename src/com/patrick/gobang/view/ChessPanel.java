@@ -11,16 +11,18 @@ import java.awt.*;
 public class ChessPanel extends JPanel {
 
 
-    public final static int CHESS_ROW = 15;
-    public final static int CHESS_COLUMN = 15;
-    public final static int ORIGIN_X = 45;
-    public final static int ORIGIN_Y = 45;
-    public final static int CHESS_SPACE = 40;
+    public static final int CHESS_ROW = 15;
+    public static final int CHESS_COLUMN = 15;
+    public static final int ORIGIN_X = 45;
+    public static final int ORIGIN_Y = 45;
+    public static final int CHESS_SPACE = 40;
+
+    // public static int[][] chessmen = new int[CHESS_COLUMN][CHESS_ROW];
 
 
 
-    public ChessPanel() {
-        super();
+    public ChessPanel(LayoutManager layoutManager) {
+        super(layoutManager);
     }
 
 
@@ -31,10 +33,17 @@ public class ChessPanel extends JPanel {
         this.drawLineHorizontal(graphics);
         this.drawLineVertical(graphics);
 
-        graphics.fillOval(0, 0, 40, 40);
+    }
 
+
+    // 绘制单个棋子
+    public void fillChessman(int chessmanX, int chessmanY) {
+        Graphics graphics = this.getGraphics();
+        graphics.fillOval(chessmanX, chessmanY, 35, 35);
 
     }
+
+
 
     // 画棋盘横线，每条横线 x1 = ORIGIN_X, x2 = ORIGIN_X + 600，固定不变
     private void drawLineHorizontal(Graphics graphics) {
@@ -65,6 +74,46 @@ public class ChessPanel extends JPanel {
         }
 
     }
+
+
+/*
+    // 绘制所有棋子
+    public void fillChessmen(Graphics graphics) {
+
+        int x = 1, y = 2;
+
+        System.out.println(x + "...." + y);
+
+        // 外层循环 y 轴坐标，相当于一横一横循环
+        for (int j = 0; j < CHESS_ROW; j++) {
+            // 内层循环 x 轴坐标，绘制出横线上的每一个点
+            for (int i = 0; i < CHESS_COLUMN; i++) {
+                // 1代表黑棋, -1代表白棋
+                if (chessmen[i][j] == 1) {
+                    graphics.setColor(Color.BLACK);
+                } else if (chessmen[i][j] == -1) {
+                    graphics.setColor(Color.WHITE);
+                } else {
+                    break;
+                }
+
+                x = ORIGIN_X + CHESS_SPACE * i;
+                y = ORIGIN_Y + CHESS_SPACE * j;
+
+                System.out.println(x + "...." + y);
+
+                graphics.fillOval(x, y, 36, 36);
+
+            }
+
+        }
+
+    }
+
+*/
+
+
+
 
 
 

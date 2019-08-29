@@ -1,7 +1,9 @@
 package com.patrick.gobang.listener;
 
-import com.patrick.gobang.view.DrawChess;
+import com.patrick.gobang.entity.Umpire;
+import com.patrick.gobang.view.ChessPanel;
 
+import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -12,32 +14,23 @@ import java.awt.event.MouseListener;
  */
 public class ChessMouseListener implements MouseListener {
 
+    private ChessPanel chessPanel = null;
+    private Umpire umpire = Umpire.getInstance();
 
-    // 1 代表黑棋，先手；-1 代表白棋，后手。
-    private int player = 1;
+
+    public ChessMouseListener(JPanel jPanel) {
+        this.chessPanel = (ChessPanel) jPanel;
+
+    }
+
 
     @Override
     public void mouseClicked(MouseEvent e) {
 
-        double x = e.getX();
-        double y = e.getY();
+        double mouseX = e.getX();
+        double mouseY = e.getY();
 
-        double cellX = (x - DrawChess.ORIGIN_X) / DrawChess.CHESS_SPACE;
-        double cellY = (y - (DrawChess.ORIGIN_Y - 20)) / DrawChess.CHESS_SPACE;
-
-        int chessX = (int) Math.round(cellX);
-        int chessY = (int) Math.round(cellY);
-
-        if (chessX >= 0 && chessX <= 14 && chessY >= 0 && chessY <= 14) {
-
-        }
-
-
-
-        System.out.println("x: " + x + ",     y: " + y);
-        System.out.println(cellX + "....." + cellY);
-        System.out.println(chessX + "......" + chessY);
-
+        umpire.judge(mouseX, mouseY, chessPanel);
 
 
     }

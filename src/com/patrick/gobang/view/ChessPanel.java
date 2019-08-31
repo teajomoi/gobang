@@ -1,7 +1,11 @@
 package com.patrick.gobang.view;
 
+import com.patrick.gobang.entity.Umpire;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * @Author: PatrickZ
@@ -17,15 +21,21 @@ public class ChessPanel extends JPanel {
     public static final int ORIGIN_Y = 45;
     public static final int CHESS_SPACE = 40;
 
-    // public static int[][] chessmen = new int[CHESS_COLUMN][CHESS_ROW];
+
+    private static ChessPanel chessPanel = new ChessPanel();
 
 
+    private ChessPanel() {
 
-    public ChessPanel(LayoutManager layoutManager) {
-        super(layoutManager);
+        this.registerListener();
+
     }
 
+    public static ChessPanel getInstance() {
+        return chessPanel;
+    }
 
+    // 绘制整个棋盘
     @Override
     public void paint(Graphics graphics) {
         super.paint(graphics);
@@ -35,14 +45,42 @@ public class ChessPanel extends JPanel {
 
     }
 
-
     // 绘制单个棋子
-    public void fillChessman(int chessmanX, int chessmanY) {
+    public void fillChessman(int chessmanX, int chessmanY, int player) {
+
+        Color color = player == 1 ? Color.BLACK : Color.WHITE;
         Graphics graphics = this.getGraphics();
-        graphics.fillOval(chessmanX, chessmanY, 35, 35);
+        graphics.setColor(color);
+
+        int x = 45 + 40 * chessmanX - 18;
+        int y = 45 + 40 * chessmanY - 18;
+        graphics.fillOval(x, y, 36, 36);
+
 
     }
 
+
+    // 注册监听器
+    private void registerListener() {
+
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                System.out.println("----- mouse pressed -----");
+
+                Umpire.getInstance().judge(e.getX(), e.getY());
+
+//                Object object = e.getSource();
+//                if (object instanceof ChessPanel) {
+//                    System.out.println(object.toString());
+//                    ChessPanel chessPanel = (ChessPanel) object;
+//                }
+            }
+
+
+        });
+
+    }
 
 
     // 画棋盘横线，每条横线 x1 = ORIGIN_X, x2 = ORIGIN_X + 600，固定不变

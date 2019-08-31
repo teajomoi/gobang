@@ -1,10 +1,10 @@
 package com.patrick.gobang.view;
 
-import com.patrick.gobang.listener.ChessMouseListener;
+import com.patrick.gobang.entity.Umpire;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseListener;
+import java.awt.event.ActionEvent;
 
 /**
  * @Author: PatrickZ
@@ -15,8 +15,6 @@ public class GameMainFrame extends JFrame {
 
     private JPanel chessPanel = null;
     private JPanel buttonPanel = null;
-
-    private MouseListener mouseListener = null;
 
 
     public GameMainFrame() {
@@ -67,18 +65,23 @@ public class GameMainFrame extends JFrame {
         buttonPanel.add(retractButton);
         buttonPanel.add(surrenderButton);
 
+        startButton.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Umpire.getInstance().restartGame();
+            }
+        });
+
     }
 
     private void initChessPanel() {
 
-        chessPanel = new ChessPanel(new BorderLayout());
+        chessPanel = ChessPanel.getInstance();
 
+        chessPanel.setLayout(new BorderLayout());
         chessPanel.setBackground(Color.LIGHT_GRAY);
         chessPanel.setPreferredSize(new Dimension(600, 0));
         chessPanel.setBorder(BorderFactory.createLoweredBevelBorder());
-
-        mouseListener = new ChessMouseListener(chessPanel);
-        chessPanel.addMouseListener(mouseListener);
 
     }
 

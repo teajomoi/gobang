@@ -2,7 +2,6 @@ package com.patrick.gobang.entity;
 
 import com.patrick.gobang.view.ChessPanel;
 
-import javax.swing.JPanel;
 import java.awt.*;
 
 /**
@@ -19,6 +18,7 @@ public class Umpire {
     // 1 代表黑方，先手；-1 代表白方，后手。
     private int player = 1;
 
+    private ChessPanel chessPanel = ChessPanel.getInstance();
     private Chessman chessman = Chessman.getInstance();
     private int[][] chessmenArray = chessman.getChessmenArray();
 
@@ -33,26 +33,22 @@ public class Umpire {
     }
 
 
-    public void judge(double mouseX, double mouseY, ChessPanel chessPanel) {
+    public void judge(double mouseX, double mouseY) {
 
+        // 检查鼠标落点是否有效
         if (checkMousePoint(mouseX, mouseY)) {
 
             // 给棋盘数组插入棋子坐标及颜色
             chessman.insertChessman(chessmanX, chessmanY, player);
 
             // 给棋盘绘制棋子
-            // chessPanel.fillChessman(chessmanX, chessmanY);
+            chessPanel.fillChessman(chessmanX, chessmanY, player);
 
-            Color color = player == 1 ? Color.BLACK : Color.WHITE;
-            Graphics graphics = chessPanel.getGraphics();
-            graphics.setColor(color);
-            int x = 45 + 40 * chessmanX - 18;
-            int y = 45 + 40 * chessmanY - 18;
-            graphics.fillOval(x, y, 36, 36);
-
+            isWin();
 
             // 交换棋手
             player *= -1;
+
 
             for (int j = 0; j < 15; j++) {
                 for (int i = 0; i < 15; i++) {
@@ -65,10 +61,19 @@ public class Umpire {
         }
 
 
+    }
 
+    public void restartGame() {
+        chessPanel.repaint();
+        chessman.emptyChess();
+        player = 1;
     }
 
 
+    private boolean isWin() {
+
+        return false;
+    }
 
 
     private boolean checkMousePoint(double x, double y) {
@@ -88,6 +93,7 @@ public class Umpire {
 
 
     }
+
 
 
 

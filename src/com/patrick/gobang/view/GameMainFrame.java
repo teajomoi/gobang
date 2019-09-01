@@ -76,12 +76,14 @@ public class GameMainFrame extends JFrame {
 
     private void initChessPanel() {
 
-        chessPanel = ChessPanel.getInstance();
+        chessPanel = ChessboardPanel.getInstance();
 
-        chessPanel.setLayout(new BorderLayout());
-        chessPanel.setBackground(Color.LIGHT_GRAY);
-        chessPanel.setPreferredSize(new Dimension(600, 0));
-        chessPanel.setBorder(BorderFactory.createLoweredBevelBorder());
+        //chessPanel = ChessPanel.getInstance();
+
+        //chessPanel.setLayout(new BorderLayout());
+        //chessPanel.setBackground(Color.LIGHT_GRAY);
+        //chessPanel.setPreferredSize(new Dimension(600, 0));
+        //chessPanel.setBorder(BorderFactory.createLoweredBevelBorder());
 
     }
 

@@ -1,6 +1,7 @@
 package com.patrick.gobang;
 
 import com.patrick.gobang.view.GameMainFrame;
+import com.patrick.gobang.view.MainFrame;
 
 /**
  * @Author: PatrickZ
@@ -11,7 +12,9 @@ public class Main {
 
     public static void main(String[] args) {
 
-        new GameMainFrame();
+        //new GameMainFrame();
+
+        new MainFrame(true);
 
 
     }

@@ -38,6 +38,7 @@ public class ChessPanel extends JPanel {
     // 绘制整个棋盘
     @Override
     public void paint(Graphics graphics) {
+
         super.paint(graphics);
 
         this.drawLineHorizontal(graphics);

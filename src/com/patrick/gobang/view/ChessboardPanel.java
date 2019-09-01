@@ -1,5 +1,7 @@
 package com.patrick.gobang.view;
 
+import com.patrick.gobang.entity.Umpire;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -58,8 +60,10 @@ public class ChessboardPanel extends JPanel implements InitializeComponent {
             @Override
             public void mousePressed(MouseEvent e) {
                 System.out.println("----- mouse pressed -----");
+                // Umpire.getInstance().setPlayer(e.getX());
+                Umpire.getInstance().judge(e.getX(), e.getY());
 
-                //Umpire.getInstance().judge(e.getX(), e.getY());
+                //UmpireAAA.getInstance().judge(e.getX(), e.getY());
 
 //                Object object = e.getSource();
 //                if (object instanceof ChessPanel) {
@@ -80,7 +84,19 @@ public class ChessboardPanel extends JPanel implements InitializeComponent {
 
 
 
+    // 绘制单个棋子
+    public void fillChessman(int chessmanX, int chessmanY, int player) {
 
+        Color color = player == 1 ? Color.BLACK : Color.WHITE;
+        Graphics graphics = this.getGraphics();
+        graphics.setColor(color);
+
+        int x = 45 + 40 * chessmanX - 18;
+        int y = 45 + 40 * chessmanY - 18;
+        graphics.fillOval(x, y, 36, 36);
+
+
+    }
 
 
 
@@ -96,7 +112,7 @@ public class ChessboardPanel extends JPanel implements InitializeComponent {
 
     }
 
-    // 画棋盘横线，每条横线 x1 = ORIGIN_X, x2 = ORIGIN_X + 600，固定不变
+    // 画棋盘横线，每条横线 x1 = CHESSBOARD_ORIGIN_X, x2 = CHESSBOARD_ORIGIN_X + 600，固定不变
     private void drawLineHorizontal(Graphics graphics) {
 
         graphics.setColor(Color.BLACK);

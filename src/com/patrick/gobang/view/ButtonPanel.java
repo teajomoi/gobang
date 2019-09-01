@@ -1,7 +1,11 @@
 package com.patrick.gobang.view;
 
+import com.patrick.gobang.entity.StartGame;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * @Author: PatrickZ
@@ -28,6 +32,7 @@ public class ButtonPanel extends JPanel implements InitializeComponent {
 
         this.addChildrenComponent();
         this.setInterface();
+        this.registerListener();
 
     }
 
@@ -60,6 +65,7 @@ public class ButtonPanel extends JPanel implements InitializeComponent {
     @Override
     public void registerListener() {
 
+        startButton.addActionListener(e -> new StartGame());
 
     }
 

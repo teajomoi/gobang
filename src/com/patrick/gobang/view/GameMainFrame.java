@@ -1,6 +1,6 @@
 package com.patrick.gobang.view;
 
-import com.patrick.gobang.entity.Umpire;
+import com.patrick.gobang.entity.UmpireAAA;
 
 import javax.swing.*;
 import java.awt.*;
@@ -68,7 +68,7 @@ public class GameMainFrame extends JFrame {
         startButton.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Umpire.getInstance().restartGame();
+                UmpireAAA.getInstance().restartGame();
             }
         });
 

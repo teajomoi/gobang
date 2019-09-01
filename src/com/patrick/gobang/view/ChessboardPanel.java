@@ -144,4 +144,42 @@ public class ChessboardPanel extends JPanel implements InitializeComponent {
 
 
 
+    /*
+    // 绘制所有棋子
+    public void fillChessmen(Graphics graphics) {
+
+        int x = 1, y = 2;
+
+        System.out.println(x + "...." + y);
+
+        // 外层循环 y 轴坐标，相当于一横一横循环
+        for (int j = 0; j < CHESSBOARD_ROW; j++) {
+            // 内层循环 x 轴坐标，绘制出横线上的每一个点
+            for (int i = 0; i < CHESSBOARD_COLUMN; i++) {
+                // 1代表黑棋, -1代表白棋
+                if (chessmen[i][j] == 1) {
+                    graphics.setColor(Color.BLACK);
+                } else if (chessmen[i][j] == -1) {
+                    graphics.setColor(Color.WHITE);
+                } else {
+                    break;
+                }
+
+                x = CHESSBOARD_ORIGIN_X + CHESSBOARD_SPACE * i;
+                y = CHESSBOARD_ORIGIN_Y + CHESSBOARD_SPACE * j;
+
+                System.out.println(x + "...." + y);
+
+                graphics.fillOval(x, y, 36, 36);
+
+            }
+
+        }
+
+    }
+
+*/
+
+
+
 }

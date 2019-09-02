@@ -31,7 +31,6 @@ public class ChessboardPanel extends JPanel implements InitializeComponent {
 
         this.init();
 
-
     }
 
     @Override
@@ -41,6 +40,7 @@ public class ChessboardPanel extends JPanel implements InitializeComponent {
         this.registerListener();
 
     }
+
 
 
     @Override
@@ -60,7 +60,7 @@ public class ChessboardPanel extends JPanel implements InitializeComponent {
             @Override
             public void mousePressed(MouseEvent e) {
                 System.out.println("----- mouse pressed -----");
-                // Umpire.getInstance().setPlayer(e.getX());
+                // Umpire.getInstance().setChessColor(e.getX());
                 Umpire.getInstance().judge(e.getX(), e.getY());
 
                 //UmpireAAA.getInstance().judge(e.getX(), e.getY());

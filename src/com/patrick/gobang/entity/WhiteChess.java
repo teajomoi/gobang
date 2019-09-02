@@ -7,17 +7,20 @@ package com.patrick.gobang.entity;
  */
 public class WhiteChess implements ChessObserver {
 
+    private int steps = 0;
 
-    public WhiteChess(Umpire umpire){
 
-        umpire.attach(this);
+    public WhiteChess(){
+
+        // umpire.attach(this);
         System.out.println("new WhiteChess");
     }
 
     @Override
-    public void onChessDown(int player) {
+    public void onChessDown(int chessmanX, int chessmanY, int player) {
         if (player == -1) {
-            System.out.println("whiteChess Observer, player: " + player);
+            steps ++;
+            System.out.println("whiteChess Observer, player: " + player + "  steps: " + steps);
         }
     }
 }

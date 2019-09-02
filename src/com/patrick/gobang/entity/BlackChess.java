@@ -7,17 +7,20 @@ package com.patrick.gobang.entity;
  */
 public class BlackChess implements ChessObserver {
 
-    public BlackChess(Umpire umpire) {
+    private int steps = 0;
 
-        umpire.attach(this);
+    public BlackChess() {
+
+        // umpire.attach(this);
         System.out.println("new BlackChess");
     }
 
     @Override
-    public void onChessDown(int player) {
+    public void onChessDown(int chessmanX, int chessmanY, int player) {
 
         if (player == 1) {
-            System.out.println("blackChess Observer, player: " + player);
+            steps ++;
+            System.out.println("blackChess Observer, player: " + player + "  steps: " + steps);
         }
     }
 }

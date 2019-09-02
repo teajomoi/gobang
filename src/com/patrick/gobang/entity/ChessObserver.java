@@ -8,7 +8,7 @@ package com.patrick.gobang.entity;
 public interface ChessObserver {
 
 
-    void onChessDown(int state);
+    void onChessDown(int chessmanX, int chessmanY, int player);
 
 
 }

@@ -1,6 +1,7 @@
 package com.patrick.gobang.view;
 
 import com.patrick.gobang.entity.StartGame;
+import com.patrick.gobang.entity.Umpire;
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,11 +55,15 @@ public class ButtonPanel extends JPanel implements InitializeComponent {
         retractButton = new JButton("悔棋");
         surrenderButton = new JButton("投降");
 
-        this.add(new JLabel());
+        JTextField textField = new JTextField();
+        textField.setEditable(false);
+
+        this.add(new JLabel("fsggsag"));
         this.add(new JLabel());
         this.add(startButton);
         this.add(retractButton);
         this.add(surrenderButton);
+        this.add(textField);
 
     }
 
@@ -66,6 +71,16 @@ public class ButtonPanel extends JPanel implements InitializeComponent {
     public void registerListener() {
 
         startButton.addActionListener(e -> new StartGame());
+
+        surrenderButton.addActionListener(e -> Umpire.getInstance().setGameRunning(false));
+
+    }
+
+    private class RestartGame {
+
+        private RestartGame() {
+            System.out.println("start new game....");
+        }
 
     }
 

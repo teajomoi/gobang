@@ -1,5 +1,6 @@
 package com.patrick.gobang.entity;
 
+import com.patrick.gobang.view.ButtonPanel;
 import com.patrick.gobang.view.ChessboardPanel;
 
 
@@ -33,6 +34,7 @@ public class StartGame {
         umpire.setGameRunning(true);
 
         ChessboardPanel.getInstance().repaint();
+        ButtonPanel.getInstance().msgLabel.setText("游戏进行中...");
 
     }
 

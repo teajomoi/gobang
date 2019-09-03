@@ -49,11 +49,9 @@ public class Umpire {
         this.chessColor = 1;
     }
 
-    public void setChessColor(int chessColor) {
-        this.chessColor = chessColor;
-        if (chessmanX >= 0 && chessmanY >= 0) {
-            this.notifyObservers(chessmanX, chessmanY, chessColor);
-        }
+    public void putChessmanOnBoard() {
+
+        this.notifyObservers(chessmanX, chessmanY, chessColor);
 
     }
 
@@ -78,18 +76,15 @@ public class Umpire {
     }
 
 
-    public void notifyObservers(int chessmanX, int chessmanY, int player) {
+    public void notifyObservers(int chessmanX, int chessmanY, int chessColor) {
         for (ChessObserver chessObserver : chessObserverList) {
-            chessObserver.onChessDown(chessmanX, chessmanY, player);
+            chessObserver.onChessDown(chessmanX, chessmanY, chessColor);
         }
     }
 
 
 
-
-
-
-    public boolean judge(double mouseX, double mouseY) {
+    public boolean checkMousePoint(double mouseX, double mouseY) {
 
         // 检查游戏是否启动
         if (! isGameRunning) {
@@ -97,14 +92,39 @@ public class Umpire {
             return false;
         }
 
-        // 检查鼠标落点是否有效
-        if (! checkMousePoint(mouseX, mouseY)) {
-            System.out.println("Chessman point invalid!");
+        double cellX = (mouseX - ChessboardPanel.CHESSBOARD_ORIGIN_X) / ChessboardPanel.CHESSBOARD_SPACE;
+        double cellY = (mouseY - ChessboardPanel.CHESSBOARD_ORIGIN_Y) / ChessboardPanel.CHESSBOARD_SPACE;
+
+        int indexX = (int) Math.round(cellX);
+        int indexY = (int) Math.round(cellY);
+
+        // 检查鼠标落点是否超出棋盘范围
+        if (indexX < 0 || indexX >= ChessboardPanel.CHESSBOARD_COLUMN) {
+            System.out.println("index x out of bounds .");
+            return false;
+        }
+        if (indexY < 0 || indexY >= ChessboardPanel.CHESSBOARD_ROW) {
+            System.out.println("index y out of bounds .");
             return false;
         }
 
+        // 检查鼠标落点是否已经有棋子
+        if (chessmenArray[indexX][indexY] != 0) {
+            System.out.println("Chessman has been existed .");
+            return false;
+        }
 
-        setChessColor(chessColor);
+        return this.judge(indexX, indexY);
+
+
+    }
+
+    public boolean judge(int indexX, int indexY) {
+
+        this.chessmanX = indexX;
+        this.chessmanY = indexY;
+
+        this.putChessmanOnBoard();
 
         if (isWinning()) {
             isGameRunning = false;
@@ -123,13 +143,48 @@ public class Umpire {
         }
         System.out.println();
 
-
-
-
-
         return false;
 
     }
+
+
+//    public boolean judge(double mouseX, double mouseY) {
+//
+//        // 检查游戏是否启动
+//        if (! isGameRunning) {
+//            System.out.println("Game is not running!");
+//            return false;
+//        }
+//
+//        // 检查鼠标落点是否有效
+//        if (! checkMousePoint(mouseX, mouseY)) {
+//            System.out.println("Chessman point invalid!");
+//            return false;
+//        }
+//
+//
+//        putChessmanOnBoard(chessColor);
+//
+//        if (isWinning()) {
+//            isGameRunning = false;
+//            System.out.println(chessColor + " winning");
+//            return true;
+//        }
+//
+//        // 交换棋手
+//        chessColor *= -1;
+//
+//        for (int j = 0; j < 15; j++) {
+//            for (int i = 0; i < 15; i++) {
+//                System.out.print(chessmenArray[i][j] + "  ");
+//            }
+//            System.out.println();
+//        }
+//        System.out.println();
+//
+//        return false;
+//
+//    }
 
 
     private boolean isWinning() {
@@ -252,23 +307,23 @@ public class Umpire {
 
 
 
-    private boolean checkMousePoint(double x, double y) {
-
-        double cellX = (x - ChessboardPanel.CHESSBOARD_ORIGIN_X) / ChessboardPanel.CHESSBOARD_SPACE;
-        double cellY = (y - ChessboardPanel.CHESSBOARD_ORIGIN_Y) / ChessboardPanel.CHESSBOARD_SPACE;
-
-        chessmanX = (int) Math.round(cellX);
-        chessmanY = (int) Math.round(cellY);
-
-        // 检查鼠标落点是否超出棋盘范围
-        if (chessmanX < 0 || chessmanX >= ChessboardPanel.CHESSBOARD_COLUMN) { return false; }
-        if (chessmanY < 0 || chessmanY >= ChessboardPanel.CHESSBOARD_ROW) { return false; }
-
-        // 检查鼠标落点是否已经有棋子
-        return chessmenArray[chessmanX][chessmanY] == 0;
-
-
-    }
+//    private boolean checkMousePoint(double x, double y) {
+//
+//        double cellX = (x - ChessboardPanel.CHESSBOARD_ORIGIN_X) / ChessboardPanel.CHESSBOARD_SPACE;
+//        double cellY = (y - ChessboardPanel.CHESSBOARD_ORIGIN_Y) / ChessboardPanel.CHESSBOARD_SPACE;
+//
+//        chessmanX = (int) Math.round(cellX);
+//        chessmanY = (int) Math.round(cellY);
+//
+//        // 检查鼠标落点是否超出棋盘范围
+//        if (chessmanX < 0 || chessmanX >= ChessboardPanel.CHESSBOARD_COLUMN) { return false; }
+//        if (chessmanY < 0 || chessmanY >= ChessboardPanel.CHESSBOARD_ROW) { return false; }
+//
+//        // 检查鼠标落点是否已经有棋子
+//        return chessmenArray[chessmanX][chessmanY] == 0;
+//
+//
+//    }
 
 
 }

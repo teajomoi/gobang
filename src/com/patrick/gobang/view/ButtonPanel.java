@@ -16,15 +16,20 @@ import java.awt.event.ActionListener;
 public class ButtonPanel extends JPanel implements InitializeComponent {
 
 
+    public JLabel msgLabel = null;
     private JButton startButton = null;
     private JButton retractButton = null;
     private JButton surrenderButton = null;
 
+    private static ButtonPanel buttonPanel = new ButtonPanel();
 
-    public ButtonPanel() {
+    private ButtonPanel() {
 
         this.init();
+    }
 
+    public static ButtonPanel getInstance() {
+        return buttonPanel;
     }
 
 
@@ -51,6 +56,7 @@ public class ButtonPanel extends JPanel implements InitializeComponent {
     @Override
     public void addChildrenComponent() {
 
+        msgLabel = new JLabel("游戏暂未开始");
         startButton = new JButton("开始新游戏");
         retractButton = new JButton("悔棋");
         surrenderButton = new JButton("投降");
@@ -58,7 +64,7 @@ public class ButtonPanel extends JPanel implements InitializeComponent {
         JTextField textField = new JTextField();
         textField.setEditable(false);
 
-        this.add(new JLabel("fsggsag"));
+        this.add(msgLabel);
         this.add(new JLabel());
         this.add(startButton);
         this.add(retractButton);
@@ -72,15 +78,11 @@ public class ButtonPanel extends JPanel implements InitializeComponent {
 
         startButton.addActionListener(e -> new StartGame());
 
-        surrenderButton.addActionListener(e -> Umpire.getInstance().setGameRunning(false));
-
-    }
-
-    private class RestartGame {
-
-        private RestartGame() {
-            System.out.println("start new game....");
-        }
+        //surrenderButton.addActionListener(e -> Umpire.getInstance().setGameRunning(false));
+        surrenderButton.addActionListener(e -> {
+            Umpire.getInstance().setGameRunning(false);
+            msgLabel.setText("游戏结束");
+        });
 
     }
 

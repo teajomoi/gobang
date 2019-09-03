@@ -60,10 +60,9 @@ public class ChessboardPanel extends JPanel implements InitializeComponent {
             @Override
             public void mousePressed(MouseEvent e) {
                 System.out.println("----- mouse pressed -----");
-                // Umpire.getInstance().setChessColor(e.getX());
-                Umpire.getInstance().judge(e.getX(), e.getY());
+                Umpire.getInstance().checkMousePoint(e.getX(), e.getY());
+                //Umpire.getInstance().judge(e.getX(), e.getY());
 
-                //UmpireAAA.getInstance().judge(e.getX(), e.getY());
 
 //                Object object = e.getSource();
 //                if (object instanceof ChessPanel) {
@@ -84,19 +83,19 @@ public class ChessboardPanel extends JPanel implements InitializeComponent {
 
 
 
-    // 绘制单个棋子
-    public void fillChessman(int chessmanX, int chessmanY, int player) {
-
-        Color color = player == 1 ? Color.BLACK : Color.WHITE;
-        Graphics graphics = this.getGraphics();
-        graphics.setColor(color);
-
-        int x = 45 + 40 * chessmanX - 18;
-        int y = 45 + 40 * chessmanY - 18;
-        graphics.fillOval(x, y, 36, 36);
-
-
-    }
+//    // 绘制单个棋子
+//    public void fillChessman(int chessmanX, int chessmanY, int player) {
+//
+//        Color color = player == 1 ? Color.BLACK : Color.WHITE;
+//        Graphics graphics = this.getGraphics();
+//        graphics.setColor(color);
+//
+//        int x = 45 + 40 * chessmanX - 18;
+//        int y = 45 + 40 * chessmanY - 18;
+//        graphics.fillOval(x, y, 36, 36);
+//
+//
+//    }
 
 
 

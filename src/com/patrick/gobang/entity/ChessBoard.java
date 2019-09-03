@@ -52,9 +52,9 @@ public class ChessBoard implements ChessObserver {
 
     }
 
-    public void insertChessman(int x, int y, int player) throws IndexOutOfBoundsException {
+    public void insertChessman(int x, int y, int chessColor) throws IndexOutOfBoundsException {
 
-        this.chessmenArray[x][y] = player;
+        this.chessmenArray[x][y] = chessColor;
 
     }
 
@@ -66,9 +66,9 @@ public class ChessBoard implements ChessObserver {
 
 
     // 绘制单个棋子
-    public void fillChessman(int chessmanX, int chessmanY, int player) {
+    public void fillChessman(int chessmanX, int chessmanY, int chessColor) {
 
-        Color color = player == 1 ? Color.BLACK : Color.WHITE;
+        Color color = chessColor == 1 ? Color.BLACK : Color.WHITE;
         Graphics graphics = chessboardPanel.getGraphics();
         graphics.setColor(color);
 

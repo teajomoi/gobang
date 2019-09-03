@@ -46,7 +46,8 @@ public class MainFrame extends JFrame implements InitializeComponent {
     @Override
     public void addChildrenComponent() {
 
-        JPanel chessboardPanel = ChessboardPanel.getInstance();
+        // JPanel chessboardPanel = ChessboardPanel.getInstance();
+        JPanel chessboardPanel = new ChessboardPanel();
         JPanel buttonPanel = ButtonPanel.getInstance();
 
         this.getContentPane().add(chessboardPanel, BorderLayout.CENTER);

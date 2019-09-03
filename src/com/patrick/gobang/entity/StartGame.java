@@ -13,7 +13,7 @@ public class StartGame {
 
 
     private Umpire umpire = null;
-    private ChessBoard chessBoard = null;
+    private Chessboard chessboard = null;
     private WhiteChess whiteChess = null;
     private BlackChess blackChess = null;
 
@@ -29,11 +29,13 @@ public class StartGame {
     private void restartGame() {
 
         this.attachObservers();
-        chessBoard.emptyChess();
+
+        chessboard.emptyChess();
+
         umpire.resetChessColor();
         umpire.setGameRunning(true);
 
-        ChessboardPanel.getInstance().repaint();
+
         ButtonPanel.getInstance().msgLabel.setText("游戏进行中...");
 
     }
@@ -46,11 +48,11 @@ public class StartGame {
         // 清空观察者list
         umpire.clearObservers();
 
-        chessBoard = ChessBoard.getInstance();
+        chessboard = ChessboardPanel.getChessboard();
         whiteChess = new WhiteChess();
         blackChess = new BlackChess();
 
-        umpire.attach(chessBoard);
+        //umpire.attach(chessboard);
         umpire.attach(whiteChess);
         umpire.attach(blackChess);
 

@@ -78,6 +78,8 @@ public class ButtonPanel extends JPanel implements InitializeComponent {
 
         startButton.addActionListener(e -> new StartGame());
 
+        retractButton.addActionListener(e -> ChessboardPanel.getChessboard().retractLastStep());
+
         //surrenderButton.addActionListener(e -> Umpire.getInstance().setGameRunning(false));
         surrenderButton.addActionListener(e -> {
             Umpire.getInstance().setGameRunning(false);

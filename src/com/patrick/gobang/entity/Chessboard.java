@@ -4,6 +4,7 @@ package com.patrick.gobang.entity;
 import com.patrick.gobang.view.ChessboardPanel;
 
 import java.awt.*;
+import java.util.Arrays;
 
 /**
  * @Author: PatrickZ
@@ -18,8 +19,12 @@ public class Chessboard {
     public static final int CHESSBOARD_ORIGIN_Y = 45;
     public static final int CHESSBOARD_SPACE = 40;
 
+    public static final int BLACK_CHESS = 1;
+    public static final int WHITE_CHESS = -1;
+
     private ChessboardPanel chessboardPanel = null;     // 棋盘Panel对象
     private int[][] chessmenArray = null;               // 二维数组存储棋子坐标
+    private int[] chessmanBorder = null;                // 已下棋子的坐标边界，左上右下。
 
     private int lastChessX = -1;            // 最后下的棋子的坐标
     private int lastChessY = -1;
@@ -29,6 +34,8 @@ public class Chessboard {
     public Chessboard(ChessboardPanel chessboardPanel) {
         this.chessboardPanel = chessboardPanel;
         this.chessmenArray = new int[CHESSBOARD_COLUMN][CHESSBOARD_ROW];
+        this.chessmanBorder = new int[4];
+        Arrays.fill(chessmanBorder, 7);
     }
 
 
@@ -36,15 +43,21 @@ public class Chessboard {
 
         this.lastChessX = chessX;
         this.lastChessY = chessY;
+        updateChessmanBorder(chessX, chessY);
+
         steps++;
         chessmenArray[chessX][chessY] = chessColor;
         System.out.println("last: " + lastChessX + ".." + lastChessY + " steps: " + steps);
         chessboardPanel.repaint();
     }
 
+    private void updateChessmanBorder(int chessX, int chessY) {
+        if (chessX < chessmanBorder[0]) chessmanBorder[0] = chessX;
+        if (chessY < chessmanBorder[1]) chessmanBorder[1] = chessY;
+        if (chessX > chessmanBorder[2]) chessmanBorder[2] = chessX;
+        if (chessY > chessmanBorder[3]) chessmanBorder[3] = chessY;
 
-    public void repaint() {
-        chessboardPanel.repaint();
+        for (int i : chessmanBorder) System.out.print(i + "..");
     }
 
 
@@ -131,19 +144,19 @@ public class Chessboard {
 
 
 
-    // 绘制单个棋子
-    public void fillChessman(int chessmanX, int chessmanY, int chessColor) {
-
-        Color color = chessColor == 1 ? Color.BLACK : Color.WHITE;
-        Graphics graphics = chessboardPanel.getGraphics();
-        graphics.setColor(color);
-
-        int x = 45 + 40 * chessmanX - 18;
-        int y = 45 + 40 * chessmanY - 18;
-        graphics.fillOval(x, y, 36, 36);
-
-
-    }
+//    // 绘制单个棋子
+//    public void fillChessman(int chessmanX, int chessmanY, int chessColor) {
+//
+//        Color color = chessColor == 1 ? Color.BLACK : Color.WHITE;
+//        Graphics graphics = chessboardPanel.getGraphics();
+//        graphics.setColor(color);
+//
+//        int x = 45 + 40 * chessmanX - 18;
+//        int y = 45 + 40 * chessmanY - 18;
+//        graphics.fillOval(x, y, 36, 36);
+//
+//
+//    }
 
 
     // 悔棋
@@ -159,11 +172,13 @@ public class Chessboard {
 
 
     // 清空棋盘
-    public void emptyChess() {
+    public void emptyChessboard() {
 
         lastChessX = -1;
         lastChessY = -1;
         steps = 0;
+
+        Arrays.fill(chessmanBorder, 7);
 
         for (int y = 0; y < CHESSBOARD_ROW; y++) {
             for (int x = 0; x < CHESSBOARD_COLUMN; x++) {
@@ -179,6 +194,10 @@ public class Chessboard {
 
     public int[][] getChessmenArray() {
         return chessmenArray;
+    }
+
+    public int[] getChessmanBorder() {
+        return chessmanBorder;
     }
 
 

@@ -12,11 +12,9 @@ public class MainFrame extends JFrame implements InitializeComponent {
 
 
 
-    public MainFrame(boolean isSetVisible) {
+    public MainFrame() {
 
         init();
-
-        this.setVisible(isSetVisible);
 
     }
 

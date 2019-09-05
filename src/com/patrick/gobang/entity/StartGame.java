@@ -13,52 +13,46 @@ public class StartGame {
 
 
     private Umpire umpire = null;
-    private Chessboard chessboard = null;
-    private WhiteChess whiteChess = null;
-    private BlackChess blackChess = null;
 
     public StartGame() {
 
-
         this.restartGame();
-        System.out.println("start game");
 
     }
 
 
     private void restartGame() {
 
-        this.attachObservers();
+        ChessboardPanel.getChessboard().emptyChessboard();
 
-        chessboard.emptyChess();
+        umpire = Umpire.getInstance();
 
-        umpire.resetChessColor();
+        umpire.resetCurrentPlayer();
         umpire.setGameRunning(true);
+        createNewPlayer();
+
+        umpire.notifyObservers(Chessboard.BLACK_CHESS);
 
 
         ButtonPanel.getInstance().msgLabel.setText("游戏进行中...");
+        System.out.println("start game");
 
     }
 
 
-    private void attachObservers() {
+    private void createNewPlayer() {
 
 
-        umpire = Umpire.getInstance();
         // 清空观察者list
         umpire.clearObservers();
 
-        chessboard = ChessboardPanel.getChessboard();
-        whiteChess = new WhiteChess();
-        blackChess = new BlackChess();
+        // human = new Human();
+        Robot blackRobot = new Robot(umpire, "Black Robot", Chessboard.BLACK_CHESS);
+        Robot whiteRobot = new Robot(umpire, "White Robot", Chessboard.WHITE_CHESS);
 
-        //umpire.attach(chessboard);
-        umpire.attach(whiteChess);
-        umpire.attach(blackChess);
+        umpire.attach(blackRobot);
+        umpire.attach(whiteRobot);
 
-
-        //umpire.attach(whiteChess);
-        //umpire.attach(blackChess);
 
     }
 

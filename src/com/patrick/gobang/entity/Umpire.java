@@ -15,7 +15,8 @@ import java.util.List;
 public class Umpire {
 
     private boolean isGameRunning = false;
-    private int chessColor = 1;
+
+    private int currentPlayer = Chessboard.BLACK_CHESS;
 
     private int chessmanX = -1;
     private int chessmanY = -1;
@@ -46,17 +47,18 @@ public class Umpire {
     }
 
 
-    public int getChessColor() {
-        return chessColor;
+    public int getCurrentPlayer() {
+        return currentPlayer;
     }
 
-    public void resetChessColor() {
-        this.chessColor = 1;
+    public void resetCurrentPlayer() {
+        this.currentPlayer = 1;
     }
 
-    public void putChessman() {
-
-        this.notifyObservers(chessmanX, chessmanY, chessColor);
+    private void switchPlayer() {
+        currentPlayer *= -1;
+        //this.notifyObservers(chessmanX, chessmanY, currentPlayer);
+        this.notifyObservers(currentPlayer);
 
     }
 
@@ -81,9 +83,9 @@ public class Umpire {
     }
 
 
-    public void notifyObservers(int chessmanX, int chessmanY, int chessColor) {
+    public void notifyObservers(int chessColor) {
         for (ChessObserver chessObserver : chessObserverList) {
-            chessObserver.onChessDown(chessmanX, chessmanY, chessColor);
+            chessObserver.onChessmanDown(chessColor);
         }
     }
 
@@ -126,31 +128,33 @@ public class Umpire {
 
     }
 
-    public boolean judge(int indexX, int indexY) {
+    public void judge(int indexX, int indexY) {
 
         this.chessmanX = indexX;
         this.chessmanY = indexY;
 
-        chessboard.putChessmanOnBoard(chessmanX, chessmanY, chessColor);
-
-        this.putChessman();
+        chessboard.putChessmanOnBoard(chessmanX, chessmanY, currentPlayer);
 
         if (isWinning()) {
             isGameRunning = false;
-            System.out.println(chessColor + " winning");
+            System.out.println(currentPlayer + " win");
+
             EventQueue.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    JOptionPane.showMessageDialog(null, chessColor + " winning!",
+                    JOptionPane.showMessageDialog(null, currentPlayer + " winning!",
                             "fsagasdg", JOptionPane.INFORMATION_MESSAGE);
                 }
             });
 
-            return true;
+            return;
+
+
         }
 
         // 交换棋手
-        chessColor *= -1;
+        this.switchPlayer();
+        // currentPlayer *= -1;
 
         for (int j = 0; j < 15; j++) {
             for (int i = 0; i < 15; i++) {
@@ -160,7 +164,7 @@ public class Umpire {
         }
         System.out.println();
 
-        return false;
+
 
     }
 
@@ -192,7 +196,7 @@ public class Umpire {
         }
 
         while (x < xMaximum) {
-            if (chessmenArray[x][y] == chessColor) {
+            if (chessmenArray[x][y] == currentPlayer) {
                 continuous++;
                 //System.out.println("SW --> NE: " + continuous);
                 if (continuous >= 5) {
@@ -225,7 +229,7 @@ public class Umpire {
 
         // System.out.println(x + "...." + y + "...." + xMaximum);
         while (x < xMaximum) {
-            if (chessmenArray[x][y] == chessColor) {
+            if (chessmenArray[x][y] == currentPlayer) {
                 continuous++;
                 //System.out.println("NW -- SE: " + continuous);
                 if (continuous >= 5) {
@@ -248,7 +252,7 @@ public class Umpire {
 
         // 固定 Y坐标 chessmanY，遍历X坐标，求水平线是否五子相连。
         for (int x = 0; x < chessmenArray.length; x++) {
-            if (chessmenArray[x][chessmanY] == chessColor) {
+            if (chessmenArray[x][chessmanY] == currentPlayer) {
                 continuous++;
                 // System.out.println("horizontal: " + continuous);
                 if (continuous >= 5) {
@@ -267,7 +271,7 @@ public class Umpire {
 
         // 固定 X坐标chessmanX，遍历Y坐标，求垂直线是否五子相连。
         for (int y = 0; y < chessmenArray[chessmanX].length; y++) {
-            if (chessmenArray[chessmanX][y] == chessColor) {
+            if (chessmenArray[chessmanX][y] == currentPlayer) {
                 continuous++;
                 // System.out.println("vertical: " + continuous);
                 if (continuous >= 5) {

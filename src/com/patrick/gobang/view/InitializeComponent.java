@@ -3,7 +3,11 @@ package com.patrick.gobang.view;
 public interface InitializeComponent {
 
 
-    void init();
+    default void init() {
+        this.setInterface();
+        this.addChildrenComponent();
+        this.registerListener();
+    }
 
 
     void setInterface();

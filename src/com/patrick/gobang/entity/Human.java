@@ -5,22 +5,27 @@ package com.patrick.gobang.entity;
  * @Date: 2019/9/1 10:30
  * @Description: TODO
  */
-public class Human implements ChessObserver {
+public class Human implements PlayerObserver {
 
-    private int steps = 0;
+    private String name;
+    private int chessColor;
+
+    private int mySteps = 0;
 
 
-    public Human(){
+    public Human(String name, int chessColor){
 
+        this.name = name;
+        this.chessColor = chessColor;
         // umpire.attach(this);
         System.out.println("new Human");
     }
 
     @Override
     public void onChessmanDown(int player) {
-        if (player == 1) {
-            steps ++;
-            System.out.println("Human Observer, player: " + player + "  steps: " + steps);
+        if (player == this.chessColor) {
+            mySteps++;
+            System.out.println("Turn to " + name + " Human Observer, player: " + player + "  mySteps: " + mySteps);
         }
     }
 }

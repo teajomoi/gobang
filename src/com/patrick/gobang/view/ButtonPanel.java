@@ -1,5 +1,6 @@
 package com.patrick.gobang.view;
 
+import com.patrick.gobang.control.NewGame;
 import com.patrick.gobang.entity.StartGame;
 import com.patrick.gobang.entity.Umpire;
 
@@ -34,16 +35,6 @@ public class ButtonPanel extends JPanel implements InitializeComponent {
 
 
     @Override
-    public void init() {
-
-        this.addChildrenComponent();
-        this.setInterface();
-        this.registerListener();
-
-    }
-
-
-    @Override
     public void setInterface() {
 
         this.setLayout(new GridLayout(7, 1, 0, 33));
@@ -57,6 +48,9 @@ public class ButtonPanel extends JPanel implements InitializeComponent {
     public void addChildrenComponent() {
 
         msgLabel = new JLabel("游戏暂未开始");
+        JComboBox<String> comboBox = new JComboBox<>();
+        comboBox.addItem("fsagf");
+        comboBox.addItem("aaa");
         startButton = new JButton("开始新游戏");
         retractButton = new JButton("悔棋");
         surrenderButton = new JButton("投降");
@@ -65,7 +59,8 @@ public class ButtonPanel extends JPanel implements InitializeComponent {
         textField.setEditable(false);
 
         this.add(msgLabel);
-        this.add(new JLabel());
+        //this.add(new JLabel());
+        this.add(comboBox);
         this.add(startButton);
         this.add(retractButton);
         this.add(surrenderButton);
@@ -76,7 +71,14 @@ public class ButtonPanel extends JPanel implements InitializeComponent {
     @Override
     public void registerListener() {
 
-        startButton.addActionListener(e -> new StartGame());
+        //startButton.addActionListener(e -> new StartGame());
+
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new NewGame();
+            }
+        });
 
         retractButton.addActionListener(e -> ChessboardPanel.getChessboard().retractLastStep());
 

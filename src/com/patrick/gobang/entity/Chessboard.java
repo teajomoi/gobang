@@ -1,6 +1,7 @@
 package com.patrick.gobang.entity;
 
 
+import com.patrick.gobang.control.GameStatus;
 import com.patrick.gobang.view.ChessboardPanel;
 
 import java.awt.*;
@@ -11,16 +12,7 @@ import java.util.Arrays;
  * @Date: 2019/9/1 14:42
  * @Description: 棋盘实体类
  */
-public class Chessboard {
-
-    public static final int CHESSBOARD_ROW = 15;
-    public static final int CHESSBOARD_COLUMN = 15;
-    public static final int CHESSBOARD_ORIGIN_X = 45;
-    public static final int CHESSBOARD_ORIGIN_Y = 45;
-    public static final int CHESSBOARD_SPACE = 40;
-
-    public static final int BLACK_CHESS = 1;
-    public static final int WHITE_CHESS = -1;
+public class Chessboard implements IChessboard {
 
     private ChessboardPanel chessboardPanel = null;     // 棋盘Panel对象
     private int[][] chessmenArray = null;               // 二维数组存储棋子坐标
@@ -28,7 +20,6 @@ public class Chessboard {
 
     private int lastChessX = -1;            // 最后下的棋子的坐标
     private int lastChessY = -1;
-    private int steps = 0;                  // 总步数
 
 
     public Chessboard(ChessboardPanel chessboardPanel) {
@@ -45,9 +36,8 @@ public class Chessboard {
         this.lastChessY = chessY;
         updateChessmanBorder(chessX, chessY);
 
-        steps++;
         chessmenArray[chessX][chessY] = chessColor;
-        System.out.println("last: " + lastChessX + ".." + lastChessY + " steps: " + steps);
+
         chessboardPanel.repaint();
     }
 
@@ -57,7 +47,7 @@ public class Chessboard {
         if (chessX > chessmanBorder[2]) chessmanBorder[2] = chessX;
         if (chessY > chessmanBorder[3]) chessmanBorder[3] = chessY;
 
-        for (int i : chessmanBorder) System.out.print(i + "..");
+        //for (int i : chessmanBorder) System.out.print(i + "..");
     }
 
 
@@ -65,7 +55,7 @@ public class Chessboard {
 
         drawLineHorizontal(graphics);
         drawLineVertical(graphics);
-        if (steps > 0) {
+        if (GameStatus.steps > 0) {
             fillAllChessmen(graphics);
             highlightLastChessman(graphics);
         }
@@ -136,10 +126,10 @@ public class Chessboard {
     // 高亮最后下的棋子
     private void highlightLastChessman(Graphics graphics) {
 
-        int x = CHESSBOARD_ORIGIN_X + CHESSBOARD_SPACE * lastChessX - 5;
-        int y = CHESSBOARD_ORIGIN_Y + CHESSBOARD_SPACE * lastChessY - 5;
+        int x = CHESSBOARD_ORIGIN_X + CHESSBOARD_SPACE * lastChessX - 18;
+        int y = CHESSBOARD_ORIGIN_Y + CHESSBOARD_SPACE * lastChessY - 18;
         graphics.setColor(Color.RED);
-        graphics.drawRect(x, y ,10, 10);
+        graphics.drawOval(x, y, 36, 36);
     }
 
 
@@ -162,7 +152,7 @@ public class Chessboard {
     // 悔棋
     public void retractLastStep() {
 
-        if (steps <= 0) return;
+        if (GameStatus.steps <= 0) return;
         System.out.println("Retract");
         //chessmenArray[lastChessX][lastChessY] = 0;
         //steps--;
@@ -176,7 +166,6 @@ public class Chessboard {
 
         lastChessX = -1;
         lastChessY = -1;
-        steps = 0;
 
         Arrays.fill(chessmanBorder, 7);
 

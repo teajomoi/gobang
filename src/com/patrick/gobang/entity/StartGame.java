@@ -46,12 +46,22 @@ public class StartGame {
         // 清空观察者list
         umpire.clearObservers();
 
-        // human = new Human();
-        Robot blackRobot = new Robot(umpire, "Black Robot", Chessboard.BLACK_CHESS);
-        Robot whiteRobot = new Robot(umpire, "White Robot", Chessboard.WHITE_CHESS);
+        PlayerObserver zhangsan = PlayerFactory.createHumanPlayer("zhangsan", Chessboard.BLACK_CHESS);
+        PlayerObserver lisi = PlayerFactory.createHumanPlayer("lisi", Chessboard.WHITE_CHESS);
 
-        umpire.attach(blackRobot);
-        umpire.attach(whiteRobot);
+        umpire.attach(zhangsan);
+        umpire.attach(lisi);
+
+
+
+
+        //Human human = new Human();
+        //Robot blackRobot = new Robot(umpire, "Black Robot", Chessboard.BLACK_CHESS);
+        //Robot whiteRobot = new Robot(umpire, "White Robot", Chessboard.WHITE_CHESS);
+
+        //umpire.attach(blackRobot);
+        //umpire.attach(whiteRobot);
+        //umpire.attach(human);
 
 
     }

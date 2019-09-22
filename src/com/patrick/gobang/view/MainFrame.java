@@ -14,16 +14,7 @@ public class MainFrame extends JFrame implements InitializeComponent {
 
     public MainFrame() {
 
-        init();
-
-    }
-
-
-    @Override
-    public void init() {
-
-        this.setInterface();
-        this.addChildrenComponent();
+        this.init();
 
     }
 

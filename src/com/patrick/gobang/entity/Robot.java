@@ -9,7 +9,7 @@ import java.util.Random;
  * @Date: 2019/9/1 10:37
  * @Description: TODO
  */
-public class Robot implements ChessObserver {
+public class Robot implements PlayerObserver {
 
 
     private Umpire umpire = null;
@@ -28,7 +28,7 @@ public class Robot implements ChessObserver {
         this.chessmanArray = ChessboardPanel.getChessboard().getChessmenArray();
         this.chessmanBorder = ChessboardPanel.getChessboard().getChessmanBorder();
 
-        System.out.println("Robot Player " + name + " has been created.");
+        System.out.println("Robot AbstractPlayer " + name + " has been created.");
     }
 
     @Override
@@ -39,7 +39,7 @@ public class Robot implements ChessObserver {
                 @Override
                 public void run() {
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(600);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

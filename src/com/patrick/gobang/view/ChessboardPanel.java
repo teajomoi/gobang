@@ -1,7 +1,8 @@
 package com.patrick.gobang.view;
 
 import com.patrick.gobang.entity.Chessboard;
-import com.patrick.gobang.entity.Umpire;
+import com.patrick.gobang.control.ChessboardFacade;
+import com.patrick.gobang.entity.IChessboardPainter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,9 +17,10 @@ import java.awt.event.MouseEvent;
 public class ChessboardPanel extends JPanel implements InitializeComponent {
 
 
+
     private static Chessboard chessboard = null;
 
-    public ChessboardPanel() {
+    ChessboardPanel() {
 
         this.init();
         chessboard = new Chessboard(this);
@@ -28,13 +30,6 @@ public class ChessboardPanel extends JPanel implements InitializeComponent {
         return chessboard;
     }
 
-    @Override
-    public void init() {
-
-        this.setInterface();
-        this.registerListener();
-
-    }
 
     @Override
     public void setInterface() {
@@ -51,9 +46,10 @@ public class ChessboardPanel extends JPanel implements InitializeComponent {
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                System.out.println("----- mouse pressed -----");
-                Umpire.getInstance().checkMousePoint(e.getX(), e.getY());
+                //System.out.println("----- mouse pressed -----");
+                //Umpire.getInstance().mousePressed(e.getX(), e.getY());
 
+                ChessboardFacade.getInstance().mousePressed(e.getX(), e.getY());
 
 //                Object object = e.getSource();
 //                if (object instanceof ChessPanel) {

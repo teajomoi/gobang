@@ -1,9 +1,6 @@
 package com.patrick.gobang.control;
 
-import com.patrick.gobang.entity.BlackPlayer;
-import com.patrick.gobang.entity.IChessboard;
-import com.patrick.gobang.entity.Umpire2;
-import com.patrick.gobang.entity.WhitePlayer;
+import com.patrick.gobang.entity.*;
 import com.patrick.gobang.view.ChessboardPanel;
 
 /**
@@ -24,10 +21,17 @@ public class NewGame {
 
     private void restartGame() {
 
-        ChessboardPanel.getChessboard().emptyChessboard();
+        this.emptyChessboard();
         this.resetGameStatus();
+
         this.resetChessboardFacade();
 
+    }
+
+
+    private void emptyChessboard() {
+
+        ChessboardPanel.getChessboard().emptyChessboard();
     }
 
 
@@ -42,14 +46,20 @@ public class NewGame {
 
     private void resetChessboardFacade() {
 
-        ChessboardFacade chessboardFacade = ChessboardFacade.getInstance();
+        Umpire umpire = new Umpire();
+        AbstractPlayer blackPlayer = new HumanPlayer(umpire, IChessboard.BLACK_CHESS, false);
+        AbstractPlayer whitePlayer = new HumanPlayer(umpire, IChessboard.WHITE_CHESS, false);
 
-        Umpire2 umpire2 = new Umpire2();
+        System.out.println("observers: " + umpire.countObservers());
 
-        chessboardFacade.setBlackPlayer(new BlackPlayer(umpire2, false));
-        chessboardFacade.setWhitePlayer(new WhitePlayer(umpire2, false));
+        ChessboardFacade facade = ChessboardFacade.getInstance();
+        facade.setUmpire(umpire);
+        facade.setBlackPlayer(blackPlayer);
+        facade.setWhitePlayer(whitePlayer);
 
 
     }
+
+
 
 }

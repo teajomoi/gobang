@@ -9,10 +9,9 @@ import java.util.Random;
  * @Date: 2019/9/1 10:37
  * @Description: TODO
  */
-public class Robot implements PlayerObserver {
+public class Robot {
 
 
-    private Umpire umpire = null;
     private String name = null;
     private int chessColor = 0;
     private int mySteps = 0;
@@ -21,8 +20,7 @@ public class Robot implements PlayerObserver {
     private int[] chessmanBorder = null;
 
 
-    public Robot(Umpire umpire, String name, int chessColor) {
-        this.umpire = umpire;
+    public Robot(String name, int chessColor) {
         this.name = name;
         this.chessColor = chessColor;
         this.chessmanArray = ChessboardPanel.getChessboard().getChessmenArray();
@@ -31,7 +29,7 @@ public class Robot implements PlayerObserver {
         System.out.println("Robot AbstractPlayer " + name + " has been created.");
     }
 
-    @Override
+    //@Override
     public void onChessmanDown(int currentPlayer) {
 
         if (currentPlayer == this.chessColor) {
@@ -44,7 +42,7 @@ public class Robot implements PlayerObserver {
                         e.printStackTrace();
                     }
                     int[] aaa = chooseOnePoint();
-                    umpire.judge(aaa[0], aaa[1]);
+                    //umpire666.judge(aaa[0], aaa[1]);
                     mySteps++;
                     System.out.println(name + " Observer, currentPlayer: " + currentPlayer + "  mySteps: " + mySteps);
                 }

@@ -1,25 +1,40 @@
 package com.patrick.gobang.entity;
 
+import java.util.Observable;
+import java.util.Observer;
+
 /**
  * @Author: PatrickZ
  * @Date: 2019/9/20 20:44
  * @Description: TODO
  */
-public abstract class AbstractPlayer implements Cloneable {
+public abstract class AbstractPlayer implements Observer, Cloneable {
 
     private boolean isRobot = false;
 
-    private int chessColor;
+    protected int chessColor;
 
-    private AbstractPlayer backup;
-
-    protected Umpire2 umpire2 = null;
+    protected Umpire umpire = null;
 
 
-    public AbstractPlayer(Umpire2 umpire2, boolean isRobot) {
-        this.umpire2 = umpire2;
+    public AbstractPlayer(boolean isRobot) {
         this.isRobot = isRobot;
     }
+
+    public AbstractPlayer(Observable observable, int chessColor, boolean isRobot) {
+        this.umpire = (Umpire) observable;
+        this.chessColor = chessColor;
+        this.isRobot = isRobot;
+
+        this.registerObserver(this);
+
+    }
+
+
+    private void registerObserver(Observer observer) {
+        this.umpire.addObserver(observer);
+    }
+
 
 
     public int getChessColor() {
@@ -31,18 +46,6 @@ public abstract class AbstractPlayer implements Cloneable {
     }
 
 
-    //public abstract void restoreMemento();
-
-
-    public AbstractPlayer getBackup() {
-        //return this.clone();
-        return null;
-    }
-
-    public void setBackup(AbstractPlayer player) {
-        this.backup = player;
-    }
-
     public boolean isRobot() {
         return isRobot;
     }
@@ -52,23 +55,9 @@ public abstract class AbstractPlayer implements Cloneable {
     }
 
 
-    public abstract void putChessmanDown(int x, int y);
+    public abstract void play(int x, int y);
 
 
-
-
-
-
-//    @Override
-//    protected AbstractPlayer clone() {
-//        try {
-//            return (AbstractPlayer) super.clone();
-//        } catch (CloneNotSupportedException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//
-//    }
 
 
 

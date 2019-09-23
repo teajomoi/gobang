@@ -1,145 +1,46 @@
 package com.patrick.gobang.entity;
 
+import com.patrick.gobang.control.GameStatus;
 import com.patrick.gobang.view.ChessboardPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Observable;
 
 /**
  * @Author: PatrickZ
- * @Date: 2019/9/1 10:16
- * @Description: 裁判类: 被观察者，饿汉式单例模式
+ * @Date: 2019/9/22 18:49
+ * @Description: TODO
  */
-public class Umpire {
-
-    private boolean isGameRunning = false;
-
-    private int currentPlayer = Chessboard.BLACK_CHESS;
-
-    private int chessmanX = -1;
-    private int chessmanY = -1;
-
-    private List<PlayerObserver> playerObserverList = null;
+public class Umpire extends Observable implements IUmpire {
 
     private Chessboard chessboard = null;
     private int[][] chessmenArray =  null;
 
+    private int chessmanX = -1;
+    private int chessmanY = -1;
 
-    private static Umpire umpire = new Umpire();
-
-
-    private Umpire() {
-
-        playerObserverList = new ArrayList<>();
+    public Umpire() {
         chessboard = ChessboardPanel.getChessboard();
         chessmenArray = chessboard.getChessmenArray();
-
     }
 
-    public static Umpire getInstance() {
-        return umpire;
-    }
-
-    public void setGameRunning(boolean gameRunning) {
-        isGameRunning = gameRunning;
-    }
-
-
-    public int getCurrentPlayer() {
-        return currentPlayer;
-    }
-
-    public void resetCurrentPlayer() {
-        this.currentPlayer = 1;
-    }
-
-    private void switchPlayer() {
-        currentPlayer *= -1;
-        //this.notifyObservers(chessmanX, chessmanY, currentPlayer);
-        this.notifyObservers(currentPlayer);
-
-    }
-
-
-    public void attach(PlayerObserver playerObserver) {
-
-        if (playerObserver == null) throw new NullPointerException();
-
-        if (! playerObserverList.contains(playerObserver)) {
-            playerObserverList.add(playerObserver);
-            System.out.println(playerObserverList.size());
-        }
-    }
-
-
-    public void clearObservers() {
-        playerObserverList.clear();
-    }
-
-    public void detach(PlayerObserver playerObserver) {
-        playerObserverList.remove(playerObserver);
-    }
-
-
-    public void notifyObservers(int chessColor) {
-        for (PlayerObserver playerObserver : playerObserverList) {
-            playerObserver.onChessmanDown(chessColor);
-        }
+    public synchronized void setObservableChanged() {
+        super.setChanged();
     }
 
 
 
-    public boolean checkMousePoint(double mouseX, double mouseY) {
+    @Override
+    public void judge(int x, int y) {
 
-        // 检查游戏是否启动
-        if (! isGameRunning) {
-            System.out.println("Game is not running!");
-            return false;
-        }
+        this.chessmanX = x;
+        this.chessmanY = y;
 
-        double cellX = (mouseX - Chessboard.CHESSBOARD_ORIGIN_X) / Chessboard.CHESSBOARD_SPACE;
-        double cellY = (mouseY - Chessboard.CHESSBOARD_ORIGIN_Y) / Chessboard.CHESSBOARD_SPACE;
+        GameStatus.steps ++;
+        System.out.println("Steps: " + GameStatus.steps);
 
-        int indexX = (int) Math.round(cellX);
-        int indexY = (int) Math.round(cellY);
-
-        // 检查鼠标落点是否超出棋盘范围
-        if (indexX < 0 || indexX >= Chessboard.CHESSBOARD_COLUMN) {
-            System.out.println("index x out of bounds .");
-            return false;
-        }
-        if (indexY < 0 || indexY >= Chessboard.CHESSBOARD_ROW) {
-            System.out.println("index y out of bounds .");
-            return false;
-        }
-
-        // 检查鼠标落点是否已经有棋子
-        if (chessmenArray[indexX][indexY] != 0) {
-            System.out.println("Chessman has been existed .");
-            return false;
-        }
-
-        this.judge(indexX, indexY);
-
-        return true;
-
-
-    }
-
-    public void judge(int indexX, int indexY) {
-
-        // 检查游戏是否启动
-        if (! isGameRunning) {
-            System.out.println("Game is not running!");
-            return;
-        }
-
-        this.chessmanX = indexX;
-        this.chessmanY = indexY;
-
-        chessboard.putChessmanOnBoard(chessmanX, chessmanY, currentPlayer);
+        chessboard.putChessmanOnBoard(x, y, GameStatus.currentPlayer);
 
         for (int j = 0; j < 15; j++) {
             for (int i = 0; i < 15; i++) {
@@ -150,31 +51,39 @@ public class Umpire {
         System.out.println();
 
         if (isWinning()) {
-            isGameRunning = false;
-            System.out.println(currentPlayer + " win");
-
-            EventQueue.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    JOptionPane.showMessageDialog(null, currentPlayer + " winning!",
-                            "fsagasdg", JOptionPane.INFORMATION_MESSAGE);
-                }
-            });
-
-            return;
-
-
+            this.finishGame();
+        } else {
+            this.switchPlayer();
         }
 
-        // 交换棋手
-        this.switchPlayer();
+    }
 
 
+    @Override
+    public void switchPlayer() {
 
+        GameStatus.currentPlayer *= -1;
+        //this.setObservableChanged();
+        //this.notifyObservers();
+        System.out.println("Current Player: " + GameStatus.currentPlayer);
 
 
     }
 
+    private void finishGame() {
+
+        GameStatus.isGameRunning = false;
+        System.out.println(GameStatus.currentPlayer + " win");
+
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                JOptionPane.showMessageDialog(null, GameStatus.currentPlayer + " winning!",
+                        "Finish Game", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
+    }
 
 
     private boolean isWinning() {
@@ -203,7 +112,7 @@ public class Umpire {
         }
 
         while (x < xMaximum) {
-            if (chessmenArray[x][y] == currentPlayer) {
+            if (chessmenArray[x][y] == GameStatus.currentPlayer) {
                 continuous++;
                 //System.out.println("SW --> NE: " + continuous);
                 if (continuous >= 5) {
@@ -236,7 +145,7 @@ public class Umpire {
 
         // System.out.println(x + "...." + y + "...." + xMaximum);
         while (x < xMaximum) {
-            if (chessmenArray[x][y] == currentPlayer) {
+            if (chessmenArray[x][y] == GameStatus.currentPlayer) {
                 continuous++;
                 //System.out.println("NW -- SE: " + continuous);
                 if (continuous >= 5) {
@@ -259,7 +168,7 @@ public class Umpire {
 
         // 固定 Y坐标 chessmanY，遍历X坐标，求水平线是否五子相连。
         for (int x = 0; x < chessmenArray.length; x++) {
-            if (chessmenArray[x][chessmanY] == currentPlayer) {
+            if (chessmenArray[x][chessmanY] == GameStatus.currentPlayer) {
                 continuous++;
                 // System.out.println("horizontal: " + continuous);
                 if (continuous >= 5) {
@@ -278,7 +187,7 @@ public class Umpire {
 
         // 固定 X坐标chessmanX，遍历Y坐标，求垂直线是否五子相连。
         for (int y = 0; y < chessmenArray[chessmanX].length; y++) {
-            if (chessmenArray[chessmanX][y] == currentPlayer) {
+            if (chessmenArray[chessmanX][y] == GameStatus.currentPlayer) {
                 continuous++;
                 // System.out.println("vertical: " + continuous);
                 if (continuous >= 5) {
@@ -290,8 +199,5 @@ public class Umpire {
         }
         return false;
     }
-
-
-
 
 }

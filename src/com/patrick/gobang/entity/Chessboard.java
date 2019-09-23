@@ -113,7 +113,6 @@ public class Chessboard implements IChessboard {
                 int chessX = CHESSBOARD_ORIGIN_X + CHESSBOARD_SPACE * x - 18;
                 int chessY = CHESSBOARD_ORIGIN_Y + CHESSBOARD_SPACE * y - 18;
 
-                // System.out.println(x + "...." + y);
 
                 graphics.fillOval(chessX, chessY, 36, 36);
 

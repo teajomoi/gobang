@@ -1,13 +1,10 @@
 package com.patrick.gobang.view;
 
+import com.patrick.gobang.control.GameStatus;
 import com.patrick.gobang.control.NewGame;
-import com.patrick.gobang.entity.StartGame;
-import com.patrick.gobang.entity.Umpire;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * @Author: PatrickZ
@@ -71,20 +68,12 @@ public class ButtonPanel extends JPanel implements InitializeComponent {
     @Override
     public void registerListener() {
 
-        //startButton.addActionListener(e -> new StartGame());
-
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new NewGame();
-            }
-        });
+        startButton.addActionListener(e -> new NewGame());
 
         retractButton.addActionListener(e -> ChessboardPanel.getChessboard().retractLastStep());
 
-        //surrenderButton.addActionListener(e -> Umpire.getInstance().setGameRunning(false));
         surrenderButton.addActionListener(e -> {
-            Umpire.getInstance().setGameRunning(false);
+            GameStatus.isGameRunning = false;
             msgLabel.setText("游戏结束");
         });
 

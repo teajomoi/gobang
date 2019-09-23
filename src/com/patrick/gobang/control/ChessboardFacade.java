@@ -1,9 +1,6 @@
 package com.patrick.gobang.control;
 
-import com.patrick.gobang.entity.BlackPlayer;
-import com.patrick.gobang.entity.Chessboard;
-import com.patrick.gobang.entity.IChessboard;
-import com.patrick.gobang.entity.WhitePlayer;
+import com.patrick.gobang.entity.*;
 import com.patrick.gobang.view.ChessboardPanel;
 
 /**
@@ -17,8 +14,9 @@ public class ChessboardFacade {
     private Chessboard chessboard = ChessboardPanel.getChessboard();
     private int[][] chessmenArray = chessboard.getChessmenArray();
 
-    private BlackPlayer blackPlayer = null;
-    private WhitePlayer whitePlayer = null;
+    private IUmpire umpire = null;
+    private AbstractPlayer blackPlayer = null;
+    private AbstractPlayer whitePlayer = null;
 
 
     private static ChessboardFacade chessboardFacade = new ChessboardFacade();
@@ -47,35 +45,22 @@ public class ChessboardFacade {
 
 
         if (this.checkMousePoint(indexX, indexY)) {
+
             int currentPlayer = GameStatus.currentPlayer;
+
             if (currentPlayer == IChessboard.BLACK_CHESS) {
-                this.blackPlayerAction(indexX, indexY);
+                if (!blackPlayer.isRobot()) {
+                    blackPlayer.play(indexX, indexY);
+                }
             } else if (currentPlayer == IChessboard.WHITE_CHESS) {
-                this.whitePlayerAction(indexX, indexY);
+                if (!whitePlayer.isRobot()) {
+                    whitePlayer.play(indexX, indexY);
+                }
             }
         }
 
     }
 
-    private void blackPlayerAction(int indexX, int indexY) {
-
-        if (blackPlayer.isRobot()) {
-            System.out.println("I'm a robot.");
-        } else {
-            blackPlayer.putChessmanDown(indexX, indexY);
-        }
-
-    }
-
-    private void whitePlayerAction(int indexX, int indexY) {
-
-        if (whitePlayer.isRobot()) {
-            System.out.println("I'm a robot.");
-        } else {
-            whitePlayer.putChessmanDown(indexX, indexY);
-        }
-
-    }
 
     private boolean checkMousePoint(int indexX, int indexY) {
 
@@ -103,13 +88,16 @@ public class ChessboardFacade {
 
 
 
-    public void setBlackPlayer(BlackPlayer blackPlayer) {
+    public void setBlackPlayer(AbstractPlayer blackPlayer) {
         this.blackPlayer = blackPlayer;
     }
 
 
-    public void setWhitePlayer(WhitePlayer whitePlayer) {
+    public void setWhitePlayer(AbstractPlayer whitePlayer) {
         this.whitePlayer = whitePlayer;
     }
 
+    public void setUmpire(Umpire umpire) {
+        this.umpire = umpire;
+    }
 }

@@ -1,6 +1,5 @@
 package com.patrick.gobang.entity;
 
-import com.patrick.gobang.control.AbstractMediator;
 import com.patrick.gobang.control.GameStat;
 
 import java.awt.*;
@@ -31,7 +30,6 @@ public interface IChessboard {
 
     void resetChessboard(IUmpire umpire, GameStat gameStat);
 
-    void setMediator(AbstractMediator mediator);
 
 
 }

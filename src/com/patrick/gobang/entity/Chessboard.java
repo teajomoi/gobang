@@ -1,7 +1,6 @@
 package com.patrick.gobang.entity;
 
 
-import com.patrick.gobang.control.AbstractMediator;
 import com.patrick.gobang.control.GameStat;
 import com.patrick.gobang.view.ChessboardPanel;
 
@@ -16,8 +15,6 @@ public class Chessboard implements IChessboard {
 
     private ChessboardPanel chessboardPanel = null;     // 棋盘Panel对象
     private static Chessboard chessboard = null;
-
-    private AbstractMediator mediator = null;
 
     private IUmpire umpire;
     private GameStat gameStat = null;
@@ -257,10 +254,6 @@ public class Chessboard implements IChessboard {
     }
 
 
-    @Override
-    public void setMediator(AbstractMediator mediator) {
-        this.mediator = mediator;
-    }
 
     public void setUmpire(IUmpire umpire) {
         this.umpire = umpire;

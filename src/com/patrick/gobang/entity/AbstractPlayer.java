@@ -10,21 +10,16 @@ import java.util.Observer;
  */
 public abstract class AbstractPlayer implements Observer, Cloneable {
 
-    private boolean isRobot = false;
+    protected boolean isRobot;
 
     protected int chessColor;
 
     protected Umpire umpire = null;
 
 
-    public AbstractPlayer(boolean isRobot) {
-        this.isRobot = isRobot;
-    }
-
-    public AbstractPlayer(Observable observable, int chessColor, boolean isRobot) {
+    public AbstractPlayer(Observable observable, int chessColor) {
         this.umpire = (Umpire) observable;
         this.chessColor = chessColor;
-        this.isRobot = isRobot;
 
         this.registerObserver(this);
 
@@ -41,17 +36,9 @@ public abstract class AbstractPlayer implements Observer, Cloneable {
         return chessColor;
     }
 
-    public void setChessColor(int chessColor) {
-        this.chessColor = chessColor;
-    }
-
 
     public boolean isRobot() {
         return isRobot;
-    }
-
-    public void setRobot(boolean robot) {
-        isRobot = robot;
     }
 
 

@@ -1,5 +1,10 @@
 package com.patrick.gobang.entity;
 
+import com.patrick.gobang.control.AbstractMediator;
+import com.patrick.gobang.control.GameStat;
+
+import java.awt.*;
+
 public interface IChessboard {
 
 
@@ -13,6 +18,20 @@ public interface IChessboard {
     int WHITE_CHESS = -1;
 
 
+
+    void mousePressed(double x, double y);
+
+    void putChessmanOnBoard(int chessX, int chessY, int chessColor);
+
+    void paintComponent(Graphics graphics);
+
+    int[][] getChessmenArray();
+
+    void emptyChessboard();
+
+    void resetChessboard(IUmpire umpire, GameStat gameStat);
+
+    void setMediator(AbstractMediator mediator);
 
 
 }

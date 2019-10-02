@@ -2,6 +2,7 @@ package com.patrick.gobang.view;
 
 import com.patrick.gobang.control.GameStatus;
 import com.patrick.gobang.control.NewGame;
+import com.patrick.gobang.control.StartGame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -68,9 +69,10 @@ public class ButtonPanel extends JPanel implements InitializeComponent {
     @Override
     public void registerListener() {
 
-        startButton.addActionListener(e -> new NewGame());
+        //startButton.addActionListener(e -> new NewGame());
+        startButton.addActionListener(e -> new StartGame());
 
-        retractButton.addActionListener(e -> ChessboardPanel.getChessboard().retractLastStep());
+        //retractButton.addActionListener(e -> ChessboardPanel.getChessboard().retractLastStep());
 
         surrenderButton.addActionListener(e -> {
             GameStatus.isGameRunning = false;

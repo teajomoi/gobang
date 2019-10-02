@@ -10,8 +10,11 @@ import java.util.Observable;
 public class HumanPlayer extends AbstractPlayer {
 
 
-    public HumanPlayer(Observable observable, int chessColor, boolean isRobot) {
-        super(observable, chessColor, isRobot);
+    public HumanPlayer(Observable observable, int chessColor) {
+
+        super(observable, chessColor);
+        this.isRobot = false;
+
     }
 
 
@@ -26,5 +29,10 @@ public class HumanPlayer extends AbstractPlayer {
     @Override
     public void update(Observable o, Object arg) {
 
+        //int[] args = (int[]) arg;
+        if (arg != null && this.chessColor == (Integer) arg) {
+            System.out.println("Turn to : " + this.chessColor);
+
+        }
     }
 }

@@ -1,7 +1,6 @@
 package com.patrick.gobang.control;
 
 import com.patrick.gobang.entity.*;
-import com.patrick.gobang.view.ChessboardPanel;
 
 /**
  * @Author: PatrickZ
@@ -10,56 +9,94 @@ import com.patrick.gobang.view.ChessboardPanel;
  */
 public class NewGame {
 
+    private IChessboard chessboard;
+    private Umpire umpire;
+
+    private GameStat gameStat = null;
+    private boolean isCreateGameStat = false;
+
+
+
 
     public NewGame() {
 
-        System.out.println("Restart Game...");
-        this.restartGame();
+        //this.restartGame();
 
     }
 
 
     private void restartGame() {
 
-        this.emptyChessboard();
-        this.resetGameStatus();
+        //if (GameStatus.isGameRunning) return;
 
-        this.resetChessboardFacade();
+        //if (gameStat != null && gameStat.isGameRunning()) return;
 
+        //this.resetGameStat();
+
+        //this.emptyChessboard();
+        //this.resetChessboard();
+
+
+        //this.resetGameStatus();
+
+        //this.resetChessboardFacade();
+        //this.notifyObservers();
+
+        //System.out.println("Restart Game...");
+
+    }
+
+    private void resetChessboard() {
+        //Chessboard.getChessboard().resetChessboard(gameStat);
+    }
+
+
+    private void resetGameStat() {
+        //this.isCreateGameStat = true;
+        //this.gameStat = GameStat.resetGameStat(this);
+        //this.isCreateGameStat = false;
     }
 
 
     private void emptyChessboard() {
 
-        ChessboardPanel.getChessboard().emptyChessboard();
+        //Chessboard.getChessboard().emptyChessboard();
     }
 
 
     private void resetGameStatus() {
 
-        GameStatus.isGameRunning = true;
-        GameStatus.currentPlayer = IChessboard.BLACK_CHESS;
-        GameStatus.steps = 0;
+        //GameStatus.isGameRunning = true;
+        //GameStatus.currentPlayer = IChessboard.BLACK_CHESS;
+        //GameStatus.steps = 0;
 
     }
 
 
     private void resetChessboardFacade() {
 
-        Umpire umpire = new Umpire();
-        AbstractPlayer blackPlayer = new HumanPlayer(umpire, IChessboard.BLACK_CHESS, false);
-        AbstractPlayer whitePlayer = new HumanPlayer(umpire, IChessboard.WHITE_CHESS, false);
-
-        System.out.println("observers: " + umpire.countObservers());
-
-        ChessboardFacade facade = ChessboardFacade.getInstance();
-        facade.setUmpire(umpire);
-        facade.setBlackPlayer(blackPlayer);
-        facade.setWhitePlayer(whitePlayer);
+        //umpire = new Umpire();
+        //AbstractPlayer blackPlayer = new RobotPlayer(umpire, IChessboard.BLACK_CHESS);
+//        AbstractPlayer blackPlayer = new HumanPlayer(umpire, IChessboard.BLACK_CHESS);
+//        AbstractPlayer whitePlayer = new HumanPlayer(umpire, IChessboard.WHITE_CHESS);
+//        //AbstractPlayer whitePlayer = new RobotPlayer(umpire, IChessboard.WHITE_CHESS);
+//        System.out.println("observers: " + umpire.countObservers());
+//
+//        ChessboardFacade facade = ChessboardFacade.getInstance();
+//        facade.setUmpire(umpire);
+//        facade.setBlackPlayer(blackPlayer);
+//        facade.setWhitePlayer(whitePlayer);
 
 
     }
 
+    private void notifyObservers() {
+        //umpire.setObservableChanged();
+        //umpire.notifyObservers(gameStat.getCurrentPlayer());
+    }
 
 
+//    public boolean isCreateGameStat() {
+//        //return isCreateGameStat;
+//    }
 }

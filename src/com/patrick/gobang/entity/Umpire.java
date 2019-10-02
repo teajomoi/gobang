@@ -1,7 +1,6 @@
 package com.patrick.gobang.entity;
 
-import com.patrick.gobang.control.GameStatus;
-import com.patrick.gobang.view.ChessboardPanel;
+import com.patrick.gobang.control.GameStat;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,21 +13,27 @@ import java.util.Observable;
  */
 public class Umpire extends Observable implements IUmpire {
 
-    private Chessboard chessboard = null;
+    private IChessboard chessboard = null;
     private int[][] chessmenArray =  null;
+    private GameStat gameStat = null;
+
+    private int currentPlayer;
+
+    private AbstractPlayer blackPlayer;
+    private AbstractPlayer whitePlayer;
 
     private int chessmanX = -1;
     private int chessmanY = -1;
 
-    public Umpire() {
-        chessboard = ChessboardPanel.getChessboard();
-        chessmenArray = chessboard.getChessmenArray();
-    }
+    public Umpire(GameStat gameStat) {
 
-    public synchronized void setObservableChanged() {
-        super.setChanged();
-    }
+        this.chessboard = Chessboard.getChessboard();
 
+        this.gameStat = gameStat;
+        this.chessmenArray = gameStat.getChessmenArray();
+        this.currentPlayer = gameStat.getCurrentPlayer();
+
+    }
 
 
     @Override
@@ -37,18 +42,7 @@ public class Umpire extends Observable implements IUmpire {
         this.chessmanX = x;
         this.chessmanY = y;
 
-        GameStatus.steps ++;
-        System.out.println("Steps: " + GameStatus.steps);
-
-        chessboard.putChessmanOnBoard(x, y, GameStatus.currentPlayer);
-
-        for (int j = 0; j < 15; j++) {
-            for (int i = 0; i < 15; i++) {
-                System.out.print(chessmenArray[i][j] + "  ");
-            }
-            System.out.println();
-        }
-        System.out.println();
+        this.putChessmanOnBoard();
 
         if (isWinning()) {
             this.finishGame();
@@ -59,26 +53,66 @@ public class Umpire extends Observable implements IUmpire {
     }
 
 
+    public void selectPlayer(int x, int y) {
+        if (currentPlayer == IChessboard.BLACK_CHESS) {
+            if (!blackPlayer.isRobot()) {
+                blackPlayer.play(x, y);
+            }
+        } else if (currentPlayer == IChessboard.WHITE_CHESS) {
+            if (!whitePlayer.isRobot()) {
+                whitePlayer.play(x, y);
+            }
+        }
+
+    }
+
+
     @Override
     public void switchPlayer() {
 
-        GameStatus.currentPlayer *= -1;
-        //this.setObservableChanged();
-        //this.notifyObservers();
-        System.out.println("Current Player: " + GameStatus.currentPlayer);
+        gameStat.switchPlayer();
+
+        this.notifyObservers(gameStat.getCurrentPlayer());
+
+        System.out.println("Current Player: " + gameStat.getCurrentPlayer());
 
 
     }
 
+
+    @Override
+    public void notifyObservers(Object arg) {
+        super.setChanged();
+        super.notifyObservers(arg);
+    }
+
+    private void putChessmanOnBoard() {
+
+        gameStat.increaseStep();
+        System.out.println("GameStat Steps: " + gameStat.getSteps());
+
+        gameStat.insertChessman(chessmanX, chessmanY, gameStat.getCurrentPlayer());
+
+        chessboard.putChessmanOnBoard(chessmanX, chessmanY, gameStat.getCurrentPlayer());
+
+        for (int j = 0; j < 15; j++) {
+            for (int i = 0; i < 15; i++) {
+                System.out.print(chessmenArray[i][j] + "  ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
     private void finishGame() {
 
-        GameStatus.isGameRunning = false;
-        System.out.println(GameStatus.currentPlayer + " win");
+        gameStat.setGameRunning(false);
+        System.out.println(gameStat.getCurrentPlayer() + " win");
 
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                JOptionPane.showMessageDialog(null, GameStatus.currentPlayer + " winning!",
+                JOptionPane.showMessageDialog(null, gameStat.getCurrentPlayer() + " winning!",
                         "Finish Game", JOptionPane.INFORMATION_MESSAGE);
             }
         });
@@ -112,7 +146,7 @@ public class Umpire extends Observable implements IUmpire {
         }
 
         while (x < xMaximum) {
-            if (chessmenArray[x][y] == GameStatus.currentPlayer) {
+            if (chessmenArray[x][y] == this.currentPlayer) {
                 continuous++;
                 //System.out.println("SW --> NE: " + continuous);
                 if (continuous >= 5) {
@@ -145,7 +179,7 @@ public class Umpire extends Observable implements IUmpire {
 
         // System.out.println(x + "...." + y + "...." + xMaximum);
         while (x < xMaximum) {
-            if (chessmenArray[x][y] == GameStatus.currentPlayer) {
+            if (chessmenArray[x][y] == this.currentPlayer) {
                 continuous++;
                 //System.out.println("NW -- SE: " + continuous);
                 if (continuous >= 5) {
@@ -168,7 +202,7 @@ public class Umpire extends Observable implements IUmpire {
 
         // 固定 Y坐标 chessmanY，遍历X坐标，求水平线是否五子相连。
         for (int x = 0; x < chessmenArray.length; x++) {
-            if (chessmenArray[x][chessmanY] == GameStatus.currentPlayer) {
+            if (chessmenArray[x][chessmanY] == this.currentPlayer) {
                 continuous++;
                 // System.out.println("horizontal: " + continuous);
                 if (continuous >= 5) {
@@ -187,7 +221,7 @@ public class Umpire extends Observable implements IUmpire {
 
         // 固定 X坐标chessmanX，遍历Y坐标，求垂直线是否五子相连。
         for (int y = 0; y < chessmenArray[chessmanX].length; y++) {
-            if (chessmenArray[chessmanX][y] == GameStatus.currentPlayer) {
+            if (chessmenArray[chessmanX][y] == this.currentPlayer) {
                 continuous++;
                 // System.out.println("vertical: " + continuous);
                 if (continuous >= 5) {
@@ -200,4 +234,12 @@ public class Umpire extends Observable implements IUmpire {
         return false;
     }
 
+
+    public void setBlackPlayer(AbstractPlayer blackPlayer) {
+        this.blackPlayer = blackPlayer;
+    }
+
+    public void setWhitePlayer(AbstractPlayer whitePlayer) {
+        this.whitePlayer = whitePlayer;
+    }
 }

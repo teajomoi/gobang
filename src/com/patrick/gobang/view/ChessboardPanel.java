@@ -1,7 +1,7 @@
 package com.patrick.gobang.view;
 
 import com.patrick.gobang.entity.Chessboard;
-import com.patrick.gobang.control.ChessboardFacade;
+import com.patrick.gobang.entity.IChessboard;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,21 +13,30 @@ import java.awt.event.MouseEvent;
  * @Date: 2019/8/31 19:57
  * @Description: TODO
  */
-public class ChessboardPanel extends JPanel implements InitializeComponent {
+public final class ChessboardPanel extends JPanel implements InitializeComponent {
 
-
-
-    private static Chessboard chessboard = null;
+    private IChessboard chessboard = null;
+    private boolean isCreateChessboard = false;
 
     ChessboardPanel() {
 
         this.init();
-        chessboard = new Chessboard(this);
+        this.createChessboard();
     }
 
-    public static Chessboard getChessboard() {
-        return chessboard;
+
+    private void createChessboard() {
+        this.isCreateChessboard = true;
+        this.chessboard = Chessboard.createChessboard(this);
+        this.isCreateChessboard = false;
+
     }
+
+
+    public boolean isCreateChessboard() {
+        return isCreateChessboard;
+    }
+
 
 
     @Override
@@ -46,7 +55,7 @@ public class ChessboardPanel extends JPanel implements InitializeComponent {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                ChessboardFacade.getInstance().mousePressed(e.getX(), e.getY());
+                chessboard.mousePressed(e.getX(), e.getY());
 
 //                Object object = e.getSource();
 //                if (object instanceof ChessPanel) {
@@ -76,6 +85,7 @@ public class ChessboardPanel extends JPanel implements InitializeComponent {
         chessboard.paintComponent(graphics);
 
     }
+
 
 
 }

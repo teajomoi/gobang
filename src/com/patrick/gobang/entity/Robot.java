@@ -1,5 +1,6 @@
 package com.patrick.gobang.entity;
 
+import com.patrick.gobang.control.GameStat;
 import com.patrick.gobang.view.ChessboardPanel;
 
 import java.util.Random;
@@ -23,8 +24,9 @@ public class Robot {
     public Robot(String name, int chessColor) {
         this.name = name;
         this.chessColor = chessColor;
-        this.chessmanArray = ChessboardPanel.getChessboard().getChessmenArray();
-        this.chessmanBorder = ChessboardPanel.getChessboard().getChessmanBorder();
+        //this.chessmanArray = Chessboard.getChessboard().getChessmenArray();
+        this.chessmanArray = GameStat.getInstance().getChessmenArray();
+        //this.chessmanBorder = ChessboardPanel.getChessboard().getChessmanBorder();
 
         System.out.println("Robot AbstractPlayer " + name + " has been created.");
     }

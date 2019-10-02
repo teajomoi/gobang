@@ -50,7 +50,7 @@ public class GameStatus {
 //        return steps;
 //    }
 //
-//    public void setSteps(int steps) {
+//    public void increaseStep(int steps) {
 //        this.steps = steps;
 //    }
 

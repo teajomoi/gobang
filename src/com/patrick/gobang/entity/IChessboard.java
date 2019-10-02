@@ -20,13 +20,9 @@ public interface IChessboard {
 
     void mousePressed(double x, double y);
 
-    void putChessmanOnBoard(int chessX, int chessY, int chessColor);
+    void repaintChessboard(int chessX, int chessY);
 
     void paintComponent(Graphics graphics);
-
-    int[][] getChessmenArray();
-
-    void emptyChessboard();
 
     void resetChessboard(IUmpire umpire, GameStat gameStat);
 

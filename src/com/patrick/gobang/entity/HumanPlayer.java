@@ -31,7 +31,7 @@ public class HumanPlayer extends AbstractPlayer {
 
         //int[] args = (int[]) arg;
         if (arg != null && this.chessColor == (Integer) arg) {
-            System.out.println("Turn to : " + this.chessColor);
+            System.out.println("Turn to : " + this.chessColor + "\n");
 
         }
     }

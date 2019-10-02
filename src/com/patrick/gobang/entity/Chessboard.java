@@ -45,11 +45,6 @@ public class Chessboard implements IChessboard {
 
     @Override
     public void mousePressed(double mouseX, double mouseY) {
-//        if (mediator == null) {
-//            System.out.println("mediator == null...");
-//        } else {
-//            mediator.execute(mediator.CHECK_MOUSE_POINT, x, y);
-//        }
 
         System.out.println("------------- mouse pressed ---------------");
 
@@ -64,24 +59,8 @@ public class Chessboard implements IChessboard {
         int indexX = (int) Math.round(cellX);
         int indexY = (int) Math.round(cellY);
 
-
         if (isPointValid(indexX, indexY)) {
-
-            //umpire.notifyObservers(new int[]{gameStat.getCurrentPlayer(), indexX, indexY});
-
             umpire.selectPlayer(indexX, indexY);
-
-//            int currentPlayer = gameStat.getCurrentPlayer();
-//
-//            if (currentPlayer == IChessboard.BLACK_CHESS) {
-//                if (!blackPlayer.isRobot()) {
-//                    blackPlayer.play(indexX, indexY);
-//                }
-//            } else if (currentPlayer == IChessboard.WHITE_CHESS) {
-//                if (!whitePlayer.isRobot()) {
-//                    whitePlayer.play(indexX, indexY);
-//                }
-//            }
         }
 
     }
@@ -110,22 +89,21 @@ public class Chessboard implements IChessboard {
     }
 
 
-
     @Override
     public void resetChessboard(IUmpire umpire, GameStat gameStat) {
         this.umpire = umpire;
         this.gameStat = gameStat;
         this.chessmenArray = gameStat.getChessmenArray();
 
+        this.chessboardPanel.repaint();
+
     }
 
-    @Override
-    public void putChessmanOnBoard(int chessX, int chessY, int chessColor) throws IndexOutOfBoundsException {
 
+    @Override
+    public void repaintChessboard(int chessX, int chessY) {
         this.lastChessX = chessX;
         this.lastChessY = chessY;
-
-        //chessmenArray[chessX][chessY] = chessColor;
 
         chessboardPanel.repaint();
     }
@@ -138,7 +116,7 @@ public class Chessboard implements IChessboard {
         drawLineVertical(graphics);
 
         if (gameStat != null && gameStat.getSteps() > 0) {
-            System.out.println(gameStat.getSteps() + "--------------------");
+            //System.out.println(gameStat.getSteps() + "--------------------");
             fillAllChessmen(graphics);
             highlightLastChessman(graphics);
         }
@@ -228,34 +206,5 @@ public class Chessboard implements IChessboard {
     }
 
 
-    // 清空棋盘
-    @Override
-    public void emptyChessboard() {
 
-        lastChessX = -1;
-        lastChessY = -1;
-
-        //Arrays.fill(chessmanBorder, 7);
-
-        for (int y = 0; y < CHESSBOARD_ROW; y++) {
-            for (int x = 0; x < CHESSBOARD_COLUMN; x++) {
-                chessmenArray[x][y] = 0;
-            }
-        }
-
-        // 重绘棋盘
-        chessboardPanel.repaint();
-
-    }
-
-    @Override
-    public int[][] getChessmenArray() {
-        return chessmenArray;
-    }
-
-
-
-    public void setUmpire(IUmpire umpire) {
-        this.umpire = umpire;
-    }
 }

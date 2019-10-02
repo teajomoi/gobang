@@ -53,6 +53,7 @@ public class Umpire extends Observable implements IUmpire {
     }
 
 
+    @Override
     public void selectPlayer(int x, int y) {
         if (currentPlayer == IChessboard.BLACK_CHESS) {
             if (!blackPlayer.isRobot()) {
@@ -74,8 +75,7 @@ public class Umpire extends Observable implements IUmpire {
 
         this.notifyObservers(gameStat.getCurrentPlayer());
 
-        System.out.println("Current Player: " + gameStat.getCurrentPlayer());
-
+        //System.out.println("notifyObservers, Current Player: " + gameStat.getCurrentPlayer());
 
     }
 
@@ -92,8 +92,7 @@ public class Umpire extends Observable implements IUmpire {
         System.out.println("GameStat Steps: " + gameStat.getSteps());
 
         gameStat.insertChessman(chessmanX, chessmanY, gameStat.getCurrentPlayer());
-
-        chessboard.putChessmanOnBoard(chessmanX, chessmanY, gameStat.getCurrentPlayer());
+        chessboard.repaintChessboard(chessmanX, chessmanY);
 
         for (int j = 0; j < 15; j++) {
             for (int i = 0; i < 15; i++) {

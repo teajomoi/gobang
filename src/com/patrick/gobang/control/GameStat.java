@@ -2,7 +2,6 @@ package com.patrick.gobang.control;
 
 
 import com.patrick.gobang.entity.IChessboard;
-import com.patrick.gobang.entity.Umpire;
 
 /**
  * @Author: PatrickZ

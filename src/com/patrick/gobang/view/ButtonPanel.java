@@ -1,6 +1,7 @@
 package com.patrick.gobang.view;
 
 import com.patrick.gobang.control.StartGame;
+import com.patrick.gobang.entity.Chessboard;
 
 import javax.swing.*;
 import java.awt.*;
@@ -69,9 +70,10 @@ public class ButtonPanel extends JPanel implements InitializeComponent {
 
         startButton.addActionListener(e -> new StartGame());
 
-        //retractButton.addActionListener(e -> ChessboardPanel.getChessboard().retractLastStep());
+        retractButton.addActionListener(e -> Chessboard.getChessboard().retractLastStep());
 
         surrenderButton.addActionListener(e -> {
+
             msgLabel.setText("游戏结束");
         });
 

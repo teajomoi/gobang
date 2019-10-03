@@ -91,7 +91,9 @@ public class Chessboard implements IChessboard {
 
     @Override
     public void resetChessboard(IUmpire umpire, GameStat gameStat) {
-        this.umpire = umpire;
+        if (umpire != null) {
+            this.umpire = umpire;
+        }
         this.gameStat = gameStat;
         this.chessmenArray = gameStat.getChessmenArray();
 
@@ -116,7 +118,6 @@ public class Chessboard implements IChessboard {
         drawLineVertical(graphics);
 
         if (gameStat != null && gameStat.getSteps() > 0) {
-            //System.out.println(gameStat.getSteps() + "--------------------");
             fillAllChessmen(graphics);
             highlightLastChessman(graphics);
         }
@@ -193,16 +194,14 @@ public class Chessboard implements IChessboard {
     }
 
 
-
-
     // 悔棋
     public void retractLastStep() {
 
-        if (gameStat.getSteps() <= 0) return;
+        if (gameStat == null || gameStat.getSteps() <= 0 || !gameStat.isGameRunning()) return;
         System.out.println("Retract");
-        //chessmenArray[lastChessX][lastChessY] = 0;
-        //steps--;
-        //this.repaint();
+
+        umpire.retract();
+
     }
 
 

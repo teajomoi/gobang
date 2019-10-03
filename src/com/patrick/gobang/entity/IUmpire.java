@@ -10,5 +10,7 @@ public interface IUmpire {
 
     void selectPlayer(int x, int y);
 
+    void retract();
+
 
 }

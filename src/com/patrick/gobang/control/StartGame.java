@@ -10,7 +10,6 @@ import com.patrick.gobang.entity.*;
 public class StartGame {
 
     private Umpire umpire;
-
     private GameStat gameStat = null;
     private boolean isCreateGameStat = false;
 
@@ -36,6 +35,9 @@ public class StartGame {
     private void resetActor() {
 
         this.umpire = new Umpire(gameStat);
+
+        GameStatCaretaker caretaker = new GameStatCaretaker();
+
         //AbstractPlayer blackPlayer = new RobotPlayer(umpire, IChessboard.BLACK_CHESS);
         AbstractPlayer blackPlayer = new HumanPlayer(umpire, IChessboard.BLACK_CHESS);
         AbstractPlayer whitePlayer = new HumanPlayer(umpire, IChessboard.WHITE_CHESS);
@@ -43,6 +45,7 @@ public class StartGame {
 
         umpire.setBlackPlayer(blackPlayer);
         umpire.setWhitePlayer(whitePlayer);
+        umpire.setCaretaker(caretaker);
 
 
         System.out.println("observers: " + umpire.countObservers());

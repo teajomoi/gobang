@@ -8,7 +8,7 @@ import java.util.Observer;
  * @Date: 2019/9/20 20:44
  * @Description: TODO
  */
-public abstract class AbstractPlayer implements Observer, Cloneable {
+public abstract class AbstractPlayer implements Observer {
 
     protected boolean isRobot;
 

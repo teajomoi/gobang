@@ -18,8 +18,6 @@ public class HumanPlayer extends AbstractPlayer {
     }
 
 
-
-
     @Override
     public void play(int x, int y) {
         System.out.println(this.chessColor + " player : " + x + " ... " + y);
@@ -29,7 +27,6 @@ public class HumanPlayer extends AbstractPlayer {
     @Override
     public void update(Observable o, Object arg) {
 
-        //int[] args = (int[]) arg;
         if (arg != null && this.chessColor == (Integer) arg) {
             System.out.println("Turn to : " + this.chessColor + "\n");
 

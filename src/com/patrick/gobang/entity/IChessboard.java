@@ -24,6 +24,10 @@ public interface IChessboard {
 
     void paintComponent(Graphics graphics);
 
+    default void resetChessboard(GameStat gameStat) {
+        this.resetChessboard(null, gameStat);
+    }
+
     void resetChessboard(IUmpire umpire, GameStat gameStat);
 
 

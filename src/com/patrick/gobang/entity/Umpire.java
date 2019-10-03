@@ -1,6 +1,7 @@
 package com.patrick.gobang.entity;
 
 import com.patrick.gobang.control.GameStat;
+import com.patrick.gobang.control.GameStatCaretaker;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,11 +14,9 @@ import java.util.Observable;
  */
 public class Umpire extends Observable implements IUmpire {
 
-    private IChessboard chessboard = null;
-    private int[][] chessmenArray =  null;
-    private GameStat gameStat = null;
-
-    private int currentPlayer;
+    private IChessboard chessboard;
+    private GameStat gameStat;
+    private GameStatCaretaker caretaker;
 
     private AbstractPlayer blackPlayer;
     private AbstractPlayer whitePlayer;
@@ -28,10 +27,7 @@ public class Umpire extends Observable implements IUmpire {
     public Umpire(GameStat gameStat) {
 
         this.chessboard = Chessboard.getChessboard();
-
         this.gameStat = gameStat;
-        this.chessmenArray = gameStat.getChessmenArray();
-        this.currentPlayer = gameStat.getCurrentPlayer();
 
     }
 
@@ -43,6 +39,7 @@ public class Umpire extends Observable implements IUmpire {
         this.chessmanY = y;
 
         this.putChessmanOnBoard();
+        this.backupGameStat();
 
         if (isWinning()) {
             this.finishGame();
@@ -52,9 +49,25 @@ public class Umpire extends Observable implements IUmpire {
 
     }
 
+    @Override
+    public void retract() {
+        int key = gameStat.getSteps() - 2;
+        System.out.println("key:    " + key);
+        if (key < 0) return;
+        GameStat memento = caretaker.getGameStat(key);
+
+        gameStat.restoreMemento(memento);
+        chessboard.resetChessboard(memento);
+
+        System.out.println("Memento Size restore: " + caretaker.getSize());
+
+    }
 
     @Override
     public void selectPlayer(int x, int y) {
+
+        int currentPlayer = gameStat.getCurrentPlayer();
+
         if (currentPlayer == IChessboard.BLACK_CHESS) {
             if (!blackPlayer.isRobot()) {
                 blackPlayer.play(x, y);
@@ -70,13 +83,8 @@ public class Umpire extends Observable implements IUmpire {
 
     @Override
     public void switchPlayer() {
-
         gameStat.switchPlayer();
-
         this.notifyObservers(gameStat.getCurrentPlayer());
-
-        //System.out.println("notifyObservers, Current Player: " + gameStat.getCurrentPlayer());
-
     }
 
 
@@ -85,6 +93,7 @@ public class Umpire extends Observable implements IUmpire {
         super.setChanged();
         super.notifyObservers(arg);
     }
+
 
     private void putChessmanOnBoard() {
 
@@ -96,11 +105,16 @@ public class Umpire extends Observable implements IUmpire {
 
         for (int j = 0; j < 15; j++) {
             for (int i = 0; i < 15; i++) {
-                System.out.print(chessmenArray[i][j] + "  ");
+                System.out.print(gameStat.getChessmenArray()[i][j] + "  ");
             }
             System.out.println();
         }
         System.out.println();
+    }
+
+    private void backupGameStat() {
+        caretaker.setGameStat(gameStat.getSteps(), gameStat.createMemento());
+        System.out.println("Memento Size: " + caretaker.getSize());
     }
 
     private void finishGame() {
@@ -121,15 +135,17 @@ public class Umpire extends Observable implements IUmpire {
 
     private boolean isWinning() {
 
-        if (checkWestToEast()) return true;
-        if (checkNorthToSouth()) return true;
-        if (checkNorthwestToSoutheast()) return true;
-        if (checkSouthwestToNortheast()) return true;
+        int[][] chessmenArray = gameStat.getChessmenArray();
+
+        if (checkWestToEast(chessmenArray)) return true;
+        if (checkNorthToSouth(chessmenArray)) return true;
+        if (checkNorthwestToSoutheast(chessmenArray)) return true;
+        if (checkSouthwestToNortheast(chessmenArray)) return true;
 
         return false;
     }
 
-    private boolean checkSouthwestToNortheast() {
+    private boolean checkSouthwestToNortheast(int[][] chessmenArray) {
 
         int continuous = 0;
         int x, y, xMaximum;
@@ -145,7 +161,7 @@ public class Umpire extends Observable implements IUmpire {
         }
 
         while (x < xMaximum) {
-            if (chessmenArray[x][y] == this.currentPlayer) {
+            if (chessmenArray[x][y] == gameStat.getCurrentPlayer()) {
                 continuous++;
                 //System.out.println("SW --> NE: " + continuous);
                 if (continuous >= 5) {
@@ -161,7 +177,7 @@ public class Umpire extends Observable implements IUmpire {
         return false;
     }
 
-    private boolean checkNorthwestToSoutheast() {
+    private boolean checkNorthwestToSoutheast(int[][] chessmenArray) {
 
         int continuous = 0;
         int x, y, xMaximum;
@@ -178,7 +194,7 @@ public class Umpire extends Observable implements IUmpire {
 
         // System.out.println(x + "...." + y + "...." + xMaximum);
         while (x < xMaximum) {
-            if (chessmenArray[x][y] == this.currentPlayer) {
+            if (chessmenArray[x][y] == gameStat.getCurrentPlayer()) {
                 continuous++;
                 //System.out.println("NW -- SE: " + continuous);
                 if (continuous >= 5) {
@@ -196,12 +212,12 @@ public class Umpire extends Observable implements IUmpire {
         return false;
     }
 
-    private boolean checkWestToEast() {
+    private boolean checkWestToEast(int[][] chessmenArray) {
         int continuous = 0;
 
         // 固定 Y坐标 chessmanY，遍历X坐标，求水平线是否五子相连。
         for (int x = 0; x < chessmenArray.length; x++) {
-            if (chessmenArray[x][chessmanY] == this.currentPlayer) {
+            if (chessmenArray[x][chessmanY] == gameStat.getCurrentPlayer()) {
                 continuous++;
                 // System.out.println("horizontal: " + continuous);
                 if (continuous >= 5) {
@@ -215,12 +231,12 @@ public class Umpire extends Observable implements IUmpire {
         return false;
     }
 
-    private boolean checkNorthToSouth() {
+    private boolean checkNorthToSouth(int[][] chessmenArray) {
         int continuous = 0;
 
         // 固定 X坐标chessmanX，遍历Y坐标，求垂直线是否五子相连。
         for (int y = 0; y < chessmenArray[chessmanX].length; y++) {
-            if (chessmenArray[chessmanX][y] == this.currentPlayer) {
+            if (chessmenArray[chessmanX][y] == gameStat.getCurrentPlayer()) {
                 continuous++;
                 // System.out.println("vertical: " + continuous);
                 if (continuous >= 5) {
@@ -240,5 +256,10 @@ public class Umpire extends Observable implements IUmpire {
 
     public void setWhitePlayer(AbstractPlayer whitePlayer) {
         this.whitePlayer = whitePlayer;
+    }
+
+    public void setCaretaker(GameStatCaretaker caretaker) {
+        this.caretaker = caretaker;
+        this.backupGameStat();
     }
 }

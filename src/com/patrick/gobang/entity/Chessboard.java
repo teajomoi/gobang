@@ -18,7 +18,7 @@ public class Chessboard implements IChessboard {
 
     private IUmpire umpire;
     private GameStat gameStat = null;
-    private int[][] chessmenArray = null;               // 二维数组存储棋子坐标
+    //private int[][] chessmenArray = null;               // 二维数组存储棋子坐标
 
     private int lastChessX = -1;            // 最后下的棋子的坐标
     private int lastChessY = -1;
@@ -79,7 +79,7 @@ public class Chessboard implements IChessboard {
         }
 
         // 检查鼠标落点是否已经有棋子
-        if (chessmenArray[indexX][indexY] != 0) {
+        if (gameStat.getChessmenArray()[indexX][indexY] != 0) {
             System.out.println("Chessman has been existed .");
             return false;
         }
@@ -95,7 +95,7 @@ public class Chessboard implements IChessboard {
             this.umpire = umpire;
         }
         this.gameStat = gameStat;
-        this.chessmenArray = gameStat.getChessmenArray();
+        //this.chessmenArray = gameStat.getChessmenArray();
 
         this.chessboardPanel.repaint();
 
@@ -164,9 +164,9 @@ public class Chessboard implements IChessboard {
             // 内层循环 x 轴坐标，绘制出横线上的每一个点
             for (int x = 0; x < CHESSBOARD_COLUMN; x++) {
                 // 1代表黑棋, -1代表白棋
-                if (chessmenArray[x][y] == 1) {
+                if (gameStat.getChessmenArray()[x][y] == 1) {
                     graphics.setColor(Color.BLACK);
-                } else if (chessmenArray[x][y] == -1) {
+                } else if (gameStat.getChessmenArray()[x][y] == -1) {
                     graphics.setColor(Color.WHITE);
                 } else {
                     continue;
